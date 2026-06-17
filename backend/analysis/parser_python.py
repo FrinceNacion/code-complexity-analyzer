@@ -1,8 +1,6 @@
 import os
-import re
-from pprint import pprint
-
-MATCH_FUNCTION_PATTERN = re.compile(r"^def\s+(\w+)\s*\((.*?)\)\s*(?:->\s*([^:]+))?\s*:", re.MULTILINE)
+import ast
+from analysis.complexity_visitor import ComplexityVisitor
 
 def parse_python_file(file_path: str):
     if not (os.path.exists(file_path)):
@@ -14,22 +12,13 @@ def parse_python_file(file_path: str):
         return
     
     file =  open(file=file_path, mode='r', encoding='utf-8')
-    functions = {}
 
-    for line_number, line in enumerate(file, 1):
-        match = re.search(MATCH_FUNCTION_PATTERN, line)
-        if match: functions[line_number] = match.groups()
-        
-    file.close()
+    tree = ast.parse(file.read())
+    visitor = ComplexityVisitor()
+    visitor.visit(tree)
 
-    if len(functions) == 0:
-        print('no functions found')
-        return
-
-    #print('line no# | function name')
-    #for line_number, function in functions.items():
-        #print(line_number, '       ', function[0])
-
-    return functions
+    functions = visitor.functions
     
-    #TODO: get function's nesting depth
+    return {
+        'functions': functions
+    }
