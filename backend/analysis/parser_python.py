@@ -22,11 +22,14 @@ def parse_python_file(file_path: str):
         
     file.close()
 
-    if len(functions) == 0: 
+    if len(functions) == 0:
+        print('no functions found')
         return
 
-    print('line no# | function name')
-    for line_number, function in functions.items():
-        print(line_number, '       ' , function[0])
+    #print('line no# | function name')
+    #for line_number, function in functions.items():
+        #print(line_number, '       ', function[0])
+
+    return functions
     
     #TODO: get function's nesting depth
