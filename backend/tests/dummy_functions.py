@@ -1,6 +1,7 @@
 # dummy functions for python parser
-
-defend = True
+def foo():
+    for i in range(12):
+        print(i)
 
 def function(): pass
 
