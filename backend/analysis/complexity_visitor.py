@@ -94,7 +94,8 @@ class ComplexityVisitor(ast.NodeVisitor):
 
         self.functions.append({
             "name": node.name,
-            "complexity": func_visitor.complexity,
+            "body": node.body,
+            "cyclomatic_complexity": func_visitor.complexity,
             "max_depth": func_visitor.max_depth,
             "line": node.lineno
         })
