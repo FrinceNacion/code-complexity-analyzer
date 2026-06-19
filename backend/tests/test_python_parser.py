@@ -7,8 +7,9 @@ def test():
 
     for function in parsed['functions']:
         print(f'Name: {function['name']}')
+        print(f'Body: {function['body']}')
         print(f'---- Line number: {function['line']}')
-        print(f'---- Complexity: {function['complexity']}')
+        print(f'---- Complexity: {function['cyclomatic_complexity']}')
         print(f'---- Max depth: {function['max_depth']}\n')
         
     
