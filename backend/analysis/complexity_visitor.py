@@ -3,6 +3,11 @@ import ast
 class ComplexityVisitor(ast.NodeVisitor):
     def __init__(self):
         self.complexity = 1 
+        self.unique_operators = set()
+        self.unique_operands = set()
+        self.operator_counter = 0
+        self.operand_counter = 0
+
         self.current_depth = 0
         self.max_depth = 0
 
