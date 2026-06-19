@@ -93,20 +93,26 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.generic_visit(node)
         self.exit_block()
 
-    def visit_ListComp(self, node):
+    def visit_ExceptHandler(self, node):
         self.complexity += 1
-        self.generic_visit(node)
+        self.unique_operators.add('except')
+        self.operator_counter += 1
 
-    def visit_SetComp(self, node):
-        self.complexity += 1
+        self.enter_block()
         self.generic_visit(node)
+        self.exit_block()
 
-    def visit_DictComp(self, node):
-        self.complexity += 1
-        self.generic_visit(node)
+    def visit_comprehension(self, node):
+        if len(node.ifs):
+            self.complexity += len(node.ifs)
+            self.unique_operators.add('if')
+            self.operator_counter += len(node.ifs)
 
-    def visit_GeneratorExp(self, node):
-        self.complexity += 1
+        if len([node.iter]):
+            self.complexity += len([node.iter])
+            self.unique_operators.add('for')
+            self.operator_counter += len([node.iter])
+
         self.generic_visit(node)
 
     def visit_BoolOp(self, node):
