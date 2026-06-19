@@ -17,8 +17,12 @@ def parse_python_file(file_path: str):
     visitor = ComplexityVisitor()
     visitor.visit(tree)
 
+    complexity = visitor.complexity
+    max_depth = visitor.max_depth
     functions = visitor.functions
     
     return {
+        'complexity': complexity,
+        'max_depth': max_depth,
         'functions': functions
     }
