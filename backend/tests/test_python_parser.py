@@ -3,7 +3,7 @@ from analysis.parser_python import parse_python_file
 def test():
     parsed = parse_python_file(file_path='backend/tests/dummies/functions.py')
 
-    print(parsed['functions'])
+    assert len(parsed['functions']) > 0
 
     for function in parsed['functions']:
         print(f'Name: {function['name']}')
