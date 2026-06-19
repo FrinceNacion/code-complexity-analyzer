@@ -1,3 +1,13 @@
+"""
+    references
+        cyclomatic complexity:
+        - https://en.wikipedia.org/wiki/Cyclomatic_complexity
+        - https://www.geeksforgeeks.org/dsa/cyclomatic-complexity/
+        
+        halstead metrics:
+        - https://en.wikipedia.org/wiki/Halstead_complexity_measures
+        - https://www.geeksforgeeks.org/software-engineering/software-engineering-halsteads-software-metrics/
+"""
 import ast
 
 class ComplexityVisitor(ast.NodeVisitor):
