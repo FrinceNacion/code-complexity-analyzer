@@ -32,13 +32,35 @@ class ComplexityVisitor(ast.NodeVisitor):
 
     def visit_If(self, node):
         self.complexity += 1
+        self.unique_operators.add('if')
+        self.operator_counter += 1
 
         self.enter_block()
         self.generic_visit(node)
         self.exit_block()
 
+    # ternary if, example: result = "positive" if x > 0 else "negative"
+    def visit_IfExp(self, node):
+        self.complexity += 1
+        self.unique_operators.add('if-ternary')
+        self.operator_counter += 1
+
+        # no enter/exit block since this is just a one-line statement
+        self.generic_visit(node)
+
     def visit_For(self, node):
         self.complexity += 1
+        self.unique_operators.add('for')
+        self.operator_counter += 1
+
+        self.enter_block()
+        self.generic_visit(node)
+        self.exit_block()
+
+    def visit_AsyncFor(self, node):
+        self.complexity += 1
+        self.unique_operators.add('for')
+        self.operator_counter += 1
 
         self.enter_block()
         self.generic_visit(node)
@@ -46,6 +68,8 @@ class ComplexityVisitor(ast.NodeVisitor):
 
     def visit_While(self, node):
         self.complexity += 1
+        self.unique_operators.add('while')
+        self.operator_counter += 1
 
         self.enter_block()
         self.generic_visit(node)
@@ -53,6 +77,8 @@ class ComplexityVisitor(ast.NodeVisitor):
 
     def visit_Try(self, node):
         self.complexity += len(node.handlers)
+        self.unique_operators.add('try')
+        self.operator_counter += 1
 
         self.enter_block()
         self.generic_visit(node)
@@ -60,6 +86,8 @@ class ComplexityVisitor(ast.NodeVisitor):
 
     def visit_Match(self, node):
         self.complexity += len(node.cases)
+        self.unique_operators.add('match')
+        self.operator_counter += 1
 
         self.enter_block()
         self.generic_visit(node)
@@ -84,6 +112,11 @@ class ComplexityVisitor(ast.NodeVisitor):
     def visit_BoolOp(self, node):
         # if a and b and c
         self.complexity += len(node.values) - 1
+        if isinstance(node.op, ast.And):
+            self.unique_operators.add("and")
+        elif isinstance(node.op, ast.Or):
+            self.unique_operators.add("or")
+        self.operator_counter += len(node.values) - 1
         self.generic_visit(node)
 
     def visit_FunctionDef(self, node):
