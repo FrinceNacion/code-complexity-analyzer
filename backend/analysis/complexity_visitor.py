@@ -82,27 +82,45 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.unique_operators.add('for')
         self.operator_counter += 1
 
+        self.loop_count += 1
+        self.loop_depth += 1
+        self.max_loop_depth = max(self.max_loop_depth, self.loop_depth)
+
         self.enter_block()
         self.generic_visit(node)
         self.exit_block()
+
+        self.loop_depth -= 1
 
     def visit_AsyncFor(self, node):
         self.complexity += 1
         self.unique_operators.add('for')
         self.operator_counter += 1
 
+        self.loop_count += 1
+        self.loop_depth += 1
+        self.max_loop_depth = max(self.max_loop_depth, self.loop_depth)
+
         self.enter_block()
         self.generic_visit(node)
         self.exit_block()
+
+        self.loop_depth -= 1
 
     def visit_While(self, node):
         self.complexity += 1
         self.unique_operators.add('while')
         self.operator_counter += 1
 
+        self.loop_count += 1
+        self.loop_depth += 1
+        self.max_loop_depth = max(self.max_loop_depth, self.loop_depth)
+
         self.enter_block()
         self.generic_visit(node)
         self.exit_block()
+
+        self.loop_depth -= 1
 
     def visit_Try(self, node):
         self.complexity += len(node.handlers)
