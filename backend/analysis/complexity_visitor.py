@@ -9,6 +9,7 @@
         - https://www.geeksforgeeks.org/software-engineering/software-engineering-halsteads-software-metrics/
 """
 import ast
+from analysis.feature_extractor import extract_features
 
 class ComplexityVisitor(ast.NodeVisitor):
     def __init__(self):
@@ -160,6 +161,31 @@ class ComplexityVisitor(ast.NodeVisitor):
             self.unique_operators.add('for')
             self.operator_counter += len([node.iter])
 
+        self.comprehension_count += 1
+        self.generic_visit(node)
+
+    def visit_Call(self, node):
+        callee = None
+        if isinstance(node.func, ast.Name):
+            callee = node.func.id
+        elif isinstance(node.func, ast.Attribute):
+            callee = node.func.attr
+
+        if callee is None:
+            return
+        
+        self.calls.append({
+            "caller": self.current_function,
+            "callee": callee
+        })
+
+        if self.current_function is not None and callee == self.current_function:
+            self.is_recursive = True
+
+        builtins = {"sorted", "min", "max", "enumerate", "zip", "map", "filter", "sum", "any", "all", "len"}
+        if callee in builtins:
+            self.builtin_calls.append(callee)
+
         self.generic_visit(node)
 
     def visit_BoolOp(self, node):
@@ -173,17 +199,25 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_FunctionDef(self, node):
+        old_function = self.current_function
+        self.current_function = node.name
+
         func_visitor = ComplexityVisitor()
+        func_visitor.current_function = node.name
 
         for stmt in node.body:
             func_visitor.visit(stmt)
+
+        features = extract_features(func_visitor)
 
         self.functions.append({
             "name": node.name,
             "body": node.body,
             "cyclomatic_complexity": func_visitor.complexity,
             "max_depth": func_visitor.max_depth,
-            "line": node.lineno
+            "line": node.lineno,
+            **features
         })
 
         self.generic_visit(node)
+        self.current_function = old_function
