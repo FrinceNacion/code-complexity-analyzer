@@ -5,15 +5,15 @@ from analysis.parser_python import parse_python_file
 
 def test_recursive_and_builtins():
     code = """
-    def factorial(n):
-        if n <= 1:
-            return 1
-        # call to factorial (recursive) and print (non-builtin/builtin depending on list)
-        # len and sum are standard builtins we track
-        val = len([1, 2])
-        val2 = sum([n])
-        return n * factorial(n - 1)
-    """
+def factorial(n):
+    if n <= 1:
+        return 1
+    # call to factorial (recursive) and print (non-builtin/builtin depending on list)
+    # len and sum are standard builtins we track
+    val = len([1, 2])
+    val2 = sum([n])
+    return n * factorial(n - 1)
+"""
     tree = ast.parse(code)
     visitor = ComplexityVisitor()
     visitor.visit(tree)
@@ -36,20 +36,20 @@ def test_recursive_and_builtins():
 
 def test_loop_depths_and_comprehensions():
     code = """
-    def nested_loops():
-        total = 0
-        # loop depth 1
-        for i in range(10):
-            # loop depth 2
-            for j in range(5):
-                # loop depth 3
-                while total < 100:
-                    total += 1
+def nested_loops():
+    total = 0
+    # loop depth 1
+    for i in range(10):
+        # loop depth 2
+        for j in range(5):
+            # loop depth 3
+            while total < 100:
+                total += 1
         
-        # comprehension
-        squares = [x*x for x in range(10)]
-        gen = (x for x in range(5))
-    """
+    # comprehension
+    squares = [x*x for x in range(10)]
+    gen = (x for x in range(5))
+"""
     tree = ast.parse(code)
     visitor = ComplexityVisitor()
     visitor.visit(tree)
@@ -66,9 +66,9 @@ def test_loop_depths_and_comprehensions():
 
 def test_halstead_metrics():
     code = """
-    a = 1 + 2
-    b = a * 3
-    """
+a = 1 + 2
+b = a * 3
+"""
     tree = ast.parse(code)
     visitor = ComplexityVisitor()
     visitor.visit(tree)
