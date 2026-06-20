@@ -31,6 +31,27 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.current_function = None
         self.functions = []
 
+    def visit(self, node):
+        if node is None:
+            return
+        
+        if isinstance(node, (ast.operator, ast.unaryop, ast.boolop, ast.cmpop, ast.Compare)):
+            self.unique_operators.add(node.__class__.__name__)
+            self.operator_counter += 1
+        elif isinstance(node, ast.Name):
+            self.unique_operands.add(node.id)
+            self.operand_counter += 1
+        elif isinstance(node, ast.Constant):
+            value = node.value
+            try:
+                hash(value)
+                self.unique_operands.add(value)
+            except TypeError:
+                self.unique_operands.add(repr(value))
+            self.operand_counter += 1
+
+        return super().visit(node)
+
     def enter_block(self):
         self.current_depth += 1
         self.max_depth = max(self.max_depth, self.current_depth)
