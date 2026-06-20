@@ -21,6 +21,14 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.current_depth = 0
         self.max_depth = 0
 
+        self.calls = []
+        self.is_recursive = False
+        self.loop_depth = 0
+        self.max_loop_depth = 0
+        self.loop_count = 0
+        self.comprehension_count = 0
+        self.builtin_calls = []
+        self.current_function = None
         self.functions = []
 
     def enter_block(self):
