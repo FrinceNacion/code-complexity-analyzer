@@ -1,6 +1,7 @@
 import os
 import ast
 from analysis.complexity_visitor import ComplexityVisitor
+from analysis.feature_extractor import extract_features
 
 def parse_python_file(file_path: str):
     if not (os.path.exists(file_path)):
@@ -20,9 +21,13 @@ def parse_python_file(file_path: str):
     complexity = visitor.complexity
     max_depth = visitor.max_depth
     functions = visitor.functions
+   
+    features = extract_features(visitor)
     
     return {
         'complexity': complexity,
         'max_depth': max_depth,
-        'functions': functions
+        'functions': functions,
+        'features': features,
+        'call_edges': visitor.calls
     }
