@@ -9,6 +9,7 @@
         - https://www.geeksforgeeks.org/software-engineering/software-engineering-halsteads-software-metrics/
 """
 import ast
+from analysis.feature_extractor import extract_features
 
 class ComplexityVisitor(ast.NodeVisitor):
     def __init__(self):
@@ -21,7 +22,36 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.current_depth = 0
         self.max_depth = 0
 
+        self.calls = []
+        self.is_recursive = False
+        self.loop_depth = 0
+        self.max_loop_depth = 0
+        self.loop_count = 0
+        self.comprehension_count = 0
+        self.builtin_calls = []
+        self.current_function = None
         self.functions = []
+
+    def visit(self, node):
+        if node is None:
+            return
+        
+        if isinstance(node, (ast.operator, ast.unaryop, ast.boolop, ast.cmpop, ast.Compare)):
+            self.unique_operators.add(node.__class__.__name__)
+            self.operator_counter += 1
+        elif isinstance(node, ast.Name):
+            self.unique_operands.add(node.id)
+            self.operand_counter += 1
+        elif isinstance(node, ast.Constant):
+            value = node.value
+            try:
+                hash(value)
+                self.unique_operands.add(value)
+            except TypeError:
+                self.unique_operands.add(repr(value))
+            self.operand_counter += 1
+
+        return super().visit(node)
 
     def enter_block(self):
         self.current_depth += 1
@@ -53,27 +83,45 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.unique_operators.add('for')
         self.operator_counter += 1
 
+        self.loop_count += 1
+        self.loop_depth += 1
+        self.max_loop_depth = max(self.max_loop_depth, self.loop_depth)
+
         self.enter_block()
         self.generic_visit(node)
         self.exit_block()
+
+        self.loop_depth -= 1
 
     def visit_AsyncFor(self, node):
         self.complexity += 1
         self.unique_operators.add('for')
         self.operator_counter += 1
 
+        self.loop_count += 1
+        self.loop_depth += 1
+        self.max_loop_depth = max(self.max_loop_depth, self.loop_depth)
+
         self.enter_block()
         self.generic_visit(node)
         self.exit_block()
+
+        self.loop_depth -= 1
 
     def visit_While(self, node):
         self.complexity += 1
         self.unique_operators.add('while')
         self.operator_counter += 1
 
+        self.loop_count += 1
+        self.loop_depth += 1
+        self.max_loop_depth = max(self.max_loop_depth, self.loop_depth)
+
         self.enter_block()
         self.generic_visit(node)
         self.exit_block()
+
+        self.loop_depth -= 1
 
     def visit_Try(self, node):
         self.complexity += len(node.handlers)
@@ -113,6 +161,31 @@ class ComplexityVisitor(ast.NodeVisitor):
             self.unique_operators.add('for')
             self.operator_counter += len([node.iter])
 
+        self.comprehension_count += 1
+        self.generic_visit(node)
+
+    def visit_Call(self, node):
+        callee = None
+        if isinstance(node.func, ast.Name):
+            callee = node.func.id
+        elif isinstance(node.func, ast.Attribute):
+            callee = node.func.attr
+
+        if callee is None:
+            return
+        
+        self.calls.append({
+            "caller": self.current_function,
+            "callee": callee
+        })
+
+        if self.current_function is not None and callee == self.current_function:
+            self.is_recursive = True
+
+        builtins = {"sorted", "min", "max", "enumerate", "zip", "map", "filter", "sum", "any", "all", "len"}
+        if callee in builtins:
+            self.builtin_calls.append(callee)
+
         self.generic_visit(node)
 
     def visit_BoolOp(self, node):
@@ -126,17 +199,25 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_FunctionDef(self, node):
+        old_function = self.current_function
+        self.current_function = node.name
+
         func_visitor = ComplexityVisitor()
+        func_visitor.current_function = node.name
 
         for stmt in node.body:
             func_visitor.visit(stmt)
+
+        features = extract_features(func_visitor)
 
         self.functions.append({
             "name": node.name,
             "body": node.body,
             "cyclomatic_complexity": func_visitor.complexity,
             "max_depth": func_visitor.max_depth,
-            "line": node.lineno
+            "line": node.lineno,
+            **features
         })
 
         self.generic_visit(node)
+        self.current_function = old_function
