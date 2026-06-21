@@ -1,16 +1,14 @@
 from analysis.parser_python import parse_python_file
  
 def test():
-    parsed = parse_python_file(file_path='backend/tests/dummies/functions.py')
+    features = parse_python_file(file_path='backend/tests/dummies/functions.py')
 
-    assert len(parsed['functions']) > 0
+    assert len(features['functions']) > 0
 
-    for function in parsed['functions']:
-        print(f'Name: {function['name']}')
-        print(f'Body: {function['body']}')
-        print(f'---- Line number: {function['line']}')
-        print(f'---- Complexity: {function['cyclomatic_complexity']}')
-        print(f'---- Max depth: {function['max_depth']}\n')
+    print('----- ----- -----')
+    for feature, value in features.items():
+        print(f'-- {feature}: {value}')
+
         
     
 test()
