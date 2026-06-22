@@ -9,6 +9,7 @@
         - https://www.geeksforgeeks.org/software-engineering/software-engineering-halsteads-software-metrics/
 """
 import ast
+import builtins
 from analysis.feature_extractor import extract_features
 
 class ComplexityVisitor(ast.NodeVisitor):
@@ -182,8 +183,7 @@ class ComplexityVisitor(ast.NodeVisitor):
         if self.current_function is not None and callee == self.current_function:
             self.is_recursive = True
 
-        builtins = {"sorted", "min", "max", "enumerate", "zip", "map", "filter", "sum", "any", "all", "len"}
-        if callee in builtins:
+        if callee in builtins.__dict__.keys():
             self.builtin_calls.append(callee)
 
         self.generic_visit(node)
