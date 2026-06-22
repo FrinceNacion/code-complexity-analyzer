@@ -5,6 +5,6 @@ def test():
 
     assert len(parsed) > 0
 
-    print(f'Cyclomatic complexity: {parsed['complexity']}') 
+    print(f'Cyclomatic complexity: {parsed['cyclomatic_complexity']}') 
 
 test()
