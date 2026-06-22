@@ -23,6 +23,3 @@ def build_graph(features: dict[str,object]):
     graph['edges'] = edges
 
     return graph
-
-features = parse_python_file(file_path='backend/tests/dummies/functions.py')
-print(build_graph(features))
