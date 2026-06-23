@@ -1,97 +1,147 @@
 import ast
+import pytest
 from analysis.complexity_visitor import ComplexityVisitor
 from analysis.feature_extractor import extract_features
-from analysis.parser_python import parse_python_file
 
-def test_recursive_and_builtins():
+
+@pytest.fixture
+def run_visitor():
+    """A factory fixture that parses code, visits its AST nodes, and returns the visitor."""
+    def _run(code_str: str) -> ComplexityVisitor:
+        tree = ast.parse(code_str)
+        visitor = ComplexityVisitor()
+        visitor.visit(tree)
+        return visitor
+    return _run
+
+
+def test_recursive_and_builtins_in_function_definition(run_visitor):
+    """Assert that recursion detection and builtins extraction function correctly."""
+    # Arrange
     code = """
 def factorial(n):
     if n <= 1:
         return 1
-    # call to factorial (recursive) and print (non-builtin/builtin depending on list)
-    # len and sum are standard builtins we track
     val = len([1, 2])
     val2 = sum([n])
     return n * factorial(n - 1)
 """
-    tree = ast.parse(code)
-    visitor = ComplexityVisitor()
-    visitor.visit(tree)
-    
+
+    # Act
+    visitor = run_visitor(code)
     features = extract_features(visitor)
-    
+
+    # Assert
     assert len(visitor.functions) == 1
     func_data = visitor.functions[0]
-    
+
     assert func_data["is_recursive"] is True
-    
     assert "len" in func_data["unique_builtin_calls"]
     assert "sum" in func_data["unique_builtin_calls"]
     assert func_data["builtin_call_count"] == 2
-    
+
     callees = [edge["callee"] for edge in func_data["call_edges"]]
     assert "factorial" in callees
     assert "len" in callees
     assert "sum" in callees
 
-def test_loop_depths_and_comprehensions():
+
+def test_loop_depths_and_comprehensions_in_function(run_visitor):
+    """Assert that loop counts, loop depths, and comprehensions are correctly counted and measured."""
+    # Arrange
     code = """
 def nested_loops():
     total = 0
-    # loop depth 1
     for i in range(10):
-        # loop depth 2
         for j in range(5):
-            # loop depth 3
             while total < 100:
                 total += 1
         
-    # comprehension
     squares = [x*x for x in range(10)]
     gen = (x for x in range(5))
 """
-    tree = ast.parse(code)
-    visitor = ComplexityVisitor()
-    visitor.visit(tree)
-    
+
+    # Act
+    visitor = run_visitor(code)
+
+    # Assert
     assert len(visitor.functions) == 1
     func_data = visitor.functions[0]
-    
-    # loop count = 3 (for, for, while)
+
     assert func_data["loop_count"] == 3
-    # max loop depth = 3
     assert func_data["max_loop_depth"] == 3
-    # comprehension count = 2 (ListComp, GeneratorExp)
     assert func_data["comprehension_count"] == 2
 
-def test_halstead_metrics():
+
+def test_halstead_metrics_for_basic_expressions(run_visitor):
+    """Assert that operators and operands are correctly counted and Halstead metrics are non-zero."""
+    # Arrange
     code = """
 a = 1 + 2
 b = a * 3
 """
-    tree = ast.parse(code)
-    visitor = ComplexityVisitor()
-    visitor.visit(tree)
+
+    # Act
+    visitor = run_visitor(code)
     features = extract_features(visitor)
-    
-    # operators: Add, Mult
+
+    # Assert
     assert "Add" in visitor.unique_operators
     assert "Mult" in visitor.unique_operators
-    
-    # operands: a, b, 1, 2, 3
+
     assert "a" in visitor.unique_operands
     assert "b" in visitor.unique_operands
     assert 1 in visitor.unique_operands
     assert 2 in visitor.unique_operands
     assert 3 in visitor.unique_operands
 
-    assert features["halstead_vocabulary"] > 0
-    assert features["halstead_length"] > 0
+    assert features["halstead_vocabulary"] == 7
+    assert features["halstead_length"] == 8
     assert features["halstead_difficulty"] > 0
     assert features["halstead_volume"] > 0
 
-if __name__ == "__main__":
-    test_recursive_and_builtins()
-    test_loop_depths_and_comprehensions()
-    test_halstead_metrics()
-    print("All feature extraction tests passed successfully!")
+
+def test_empty_input_produces_base_metrics(run_visitor):
+    """Assert that parsing empty code results in baseline features and zero Halstead complexity."""
+    # Arrange
+    code = ""
+
+    # Act
+    visitor = run_visitor(code)
+    features = extract_features(visitor)
+
+    # Assert
+    assert features["cyclomatic_complexity"] == 1
+    assert features["max_nesting_depth"] == 0
+    assert features["max_loop_depth"] == 0
+    assert features["loop_count"] == 0
+    assert features["comprehension_count"] == 0
+    assert features["is_recursive"] is False
+    assert features["builtin_call_count"] == 0
+    assert features["halstead_vocabulary"] == 0
+    assert features["halstead_length"] == 0
+    assert features["halstead_difficulty"] == 0
+    assert features["halstead_volume"] == 0
+
+
+def test_try_except_blocks_increase_cyclomatic_complexity(run_visitor):
+    """Assert that try-except blocks increase complexity based on handlers and except statements."""
+    # Arrange
+    code = """
+def try_example():
+    try:
+        x = 1
+    except ValueError:
+        pass
+    except TypeError:
+        pass
+"""
+
+    # Act
+    visitor = run_visitor(code)
+
+    # Assert
+    assert len(visitor.functions) == 1
+    func_data = visitor.functions[0]
+    # base complexity (1) + len(handlers) (2) + except nodes visited (2) = 5
+    assert func_data["cyclomatic_complexity"] == 5

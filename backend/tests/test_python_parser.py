@@ -1,14 +1,76 @@
+import os
+import pytest
 from analysis.parser_python import parse_python_file
- 
-def test():
-    features = parse_python_file(file_path='backend/tests/dummies/functions.py')
 
-    assert len(features['functions']) > 0
 
-    print('----- ----- -----')
-    for feature, value in features.items():
-        print(f'-- {feature}: {value}')
+def test_parse_python_file_extracts_function_features_correctly():
+    """Assert that parse_python_file correctly extracts properties and metrics of functions in the dummy file."""
+    # Arrange
+    dummy_path = os.path.join("backend", "tests", "dummies", "functions.py")
 
-        
+    # Act
+    features = parse_python_file(file_path=dummy_path)
+
+    # Assert
+    assert features is not None
+    assert "functions" in features
     
-test()
+    functions = features["functions"]
+    # There should be 8 functions defined in backend/tests/dummies/functions.py
+    assert len(functions) == 8
+
+    # Index functions by name for easier assertions
+    func_map = {f["name"]: f for f in functions}
+
+    # Verify foo
+    assert "foo" in func_map
+    assert func_map["foo"]["cyclomatic_complexity"] == 2
+    assert func_map["foo"]["max_nesting_depth"] == 1
+    assert func_map["foo"]["is_recursive"] is False
+    assert "print" in func_map["foo"]["unique_builtin_calls"]
+
+    # Verify hello
+    assert "hello" in func_map
+    assert func_map["hello"]["cyclomatic_complexity"] == 1
+    assert func_map["hello"]["max_nesting_depth"] == 0
+
+    # Verify factorial
+    assert "factorial" in func_map
+    assert func_map["factorial"]["cyclomatic_complexity"] == 2
+    assert func_map["factorial"]["is_recursive"] is True
+    assert "len" in func_map["factorial"]["unique_builtin_calls"]
+    assert "sum" in func_map["factorial"]["unique_builtin_calls"]
+
+    # Verify nested_loops
+    assert "nested_loops" in func_map
+    assert func_map["nested_loops"]["cyclomatic_complexity"] == 6
+    assert func_map["nested_loops"]["max_nesting_depth"] == 3
+    assert func_map["nested_loops"]["loop_count"] == 3
+    assert func_map["nested_loops"]["comprehension_count"] == 2
+
+
+def test_parse_python_file_with_syntax_error(tmp_path):
+    """Assert that parsing a Python file with a syntax error raises a SyntaxError."""
+    # Arrange
+    invalid_file = tmp_path / "invalid_syntax.py"
+    invalid_file.write_text("def invalid_syntax(:\n    pass\n")
+
+    # Act & Assert
+    with pytest.raises(SyntaxError):
+        parse_python_file(file_path=str(invalid_file))
+
+
+def test_parse_python_file_with_valid_dynamic_code(tmp_path):
+    """Assert that parse_python_file works correctly on a dynamically created valid file."""
+    # Arrange
+    valid_file = tmp_path / "valid_code.py"
+    valid_file.write_text("def simple_func():\n    return 42\n")
+
+    # Act
+    features = parse_python_file(file_path=str(valid_file))
+
+    # Assert
+    assert features is not None
+    assert len(features["functions"]) == 1
+    assert features["functions"][0]["name"] == "simple_func"
+    assert features["functions"][0]["cyclomatic_complexity"] == 1
