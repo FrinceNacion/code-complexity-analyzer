@@ -1,4 +1,6 @@
 import os
+from analysis.parser_python import parse_python_file
+from analysis.call_graph import build_graph
 
 def analyze():
     path = input('Enter python file path: ')
@@ -15,7 +17,7 @@ def analyze():
         print('path not file')
         return
 
-    print('passed')
-    
-if __name__ == '__main__':
-    analyze()
+    features = parse_python_file(file_path=path)
+    graph = build_graph(features)
+
+    return [features, graph]
