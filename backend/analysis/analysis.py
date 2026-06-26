@@ -3,7 +3,7 @@ import argparse
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="codelens",
+        prog="code complexity analyzer",
         description="Analyze Python source code complexity.",
     )
     parser.add_argument("file", help="Path to the Python file to analyze")
@@ -60,7 +60,7 @@ def print_table(features: dict) -> None:
     print()
     print(f"  File: {features.get('file_path', '')}")
     print(f"  Functions: {len(functions)}  |  "
-          f"File CC: {features['cyclomatic_complexity']}  |  "
+          f"File cyclomatic complexity: {features['cyclomatic_complexity']}  |  "
           f"Max depth: {features['max_nesting_depth']}")
     print()
     print(header)
@@ -85,7 +85,7 @@ def print_table(features: dict) -> None:
               f"{', '.join(function['name'] for function in hotspots)}")
     print()
 
-def analyze(file_path: str) -> int:
+def analyze(file_path: str, as_json: bool = False) -> int:
     from analysis.parser_python import parse_python_file
     from analysis.call_graph import build_graph
 
