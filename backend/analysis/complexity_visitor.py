@@ -9,7 +9,7 @@
         - https://www.geeksforgeeks.org/software-engineering/software-engineering-halsteads-software-metrics/
 """
 import ast
-import builtins
+from analysis.constants import TRACKED_BUILTINS
 from analysis.feature_extractor import extract_features
 
 class ComplexityVisitor(ast.NodeVisitor):
@@ -183,7 +183,7 @@ class ComplexityVisitor(ast.NodeVisitor):
         if self.current_function is not None and callee == self.current_function:
             self.is_recursive = True
 
-        if callee in builtins.__dict__.keys():
+        if callee in TRACKED_BUILTINS:
             self.builtin_calls.append(callee)
 
         self.generic_visit(node)

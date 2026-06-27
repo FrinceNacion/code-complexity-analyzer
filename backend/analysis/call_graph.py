@@ -1,5 +1,5 @@
 from analysis.parser_python import parse_python_file
-import builtins
+from analysis.constants import TRACKED_BUILTINS
 
 def build_graph(features: dict[str,object]):
     if not len(features.get('functions')) > 0:
@@ -14,7 +14,7 @@ def build_graph(features: dict[str,object]):
         nodes.append(node)
 
     for edge in features.get('call_edges'):
-        if edge['callee'] in builtins.__dict__.keys():
+        if edge['callee'] in TRACKED_BUILTINS:
             continue
         node_edge = {'source': edge['caller'], 'target': edge['callee']}
         edges.append(node_edge)
