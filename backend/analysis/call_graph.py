@@ -1,25 +1,20 @@
 from analysis.parser_python import parse_python_file
 from analysis.constants import TRACKED_BUILTINS
+from analysis.models import GraphEdge, GraphNode, CallGraph
 
 def build_graph(features: dict[str,object]):
     if not len(features.get('functions')) > 0:
         return 'no functions'
     
-    graph = {}
     nodes = []
     edges = []
 
     for function in features.get('functions'):
-        node = {'label': function.get('name'), 'complexity': function.get('cyclomatic_complexity')}
-        nodes.append(node)
+        nodes.append(GraphNode(label=function.get('name'), complexity=function.get('cyclomatic_complexity')))
 
     for edge in features.get('call_edges'):
         if edge['callee'] in TRACKED_BUILTINS:
             continue
-        node_edge = {'source': edge['caller'], 'target': edge['callee']}
-        edges.append(node_edge)
-    
-    graph['nodes'] = nodes
-    graph['edges'] = edges
+        edges.append(GraphEdge(source=edge['caller'], target=edge['callee']))
 
-    return graph
+    return CallGraph(nodes=nodes, edges=edges)
