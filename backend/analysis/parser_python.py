@@ -25,5 +25,4 @@ def parse_python_file(file_path: str):
     return {
         **features,
         'functions': functions,
-        'call_edges': visitor.calls,
     }
