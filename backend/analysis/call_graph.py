@@ -10,9 +10,9 @@ def build_graph(features: dict[str,object]):
     edges = []
 
     for function in features.get('functions'):
-        nodes.append(GraphNode(label=function.get('name'), complexity=function.get('cyclomatic_complexity')))
+        nodes.append(GraphNode(label=function.get('name'), complexity=function.get('features').cyclomatic_complexity))
 
-    for edge in features.get('call_edges'):
+    for edge in features.get('features').call_edges:
         if edge['callee'] in TRACKED_BUILTINS:
             continue
         edges.append(GraphEdge(source=edge['caller'], target=edge['callee']))

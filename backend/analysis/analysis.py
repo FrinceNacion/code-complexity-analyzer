@@ -60,26 +60,26 @@ def print_table(features: dict) -> None:
     print()
     print(f"  File: {features.get('file_path', '')}")
     print(f"  Functions: {len(functions)}  |  "
-          f"File cyclomatic complexity: {features['cyclomatic_complexity']}  |  "
-          f"Max depth: {features['max_nesting_depth']}")
+          f"File cyclomatic complexity: {features['features'].cyclomatic_complexity}  |  "
+          f"Max depth: {features['features'].max_nesting_depth}")
     print()
     print(header)
     print(separator)
  
     # Sort by cyclomatic complexity descending (worst first)
-    for function in sorted(functions, key=lambda x: x["cyclomatic_complexity"], reverse=True):
-        risk = risk_label(function["cyclomatic_complexity"])
+    for function in sorted(functions, key=lambda x: x["features"].cyclomatic_complexity, reverse=True):
+        risk = risk_label(function["features"].cyclomatic_complexity)
         print(
             f"{function['name']:<{name_w}}  "
             f"{function['line']:>{line_w}}  "
-            f"{function['cyclomatic_complexity']:>{cc_w}}  "
-            f"{function['max_depth']:>{depth_w}}  "
-            f"{function['loop_count']:>{loops_w}}  "
+            f"{function['features'].cyclomatic_complexity:>{cc_w}}  "
+            f"{function['features'].max_nesting_depth:>{depth_w}}  "
+            f"{function['features'].loop_count:>{loops_w}}  "
             f"{risk:<{risk_w}}"
         )
  
     print(separator)
-    hotspots = [function for function in functions if function["cyclomatic_complexity"] > 10]
+    hotspots = [function for function in functions if function["features"].cyclomatic_complexity > 10]
     if hotspots:
         print(f"\n  ⚠  {len(hotspots)} hotspot(s) detected (complexity > 10): "
               f"{', '.join(function['name'] for function in hotspots)}")
