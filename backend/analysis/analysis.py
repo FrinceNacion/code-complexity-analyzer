@@ -1,4 +1,5 @@
 import os, sys
+import json
 import argparse
 
 def build_parser() -> argparse.ArgumentParser:
@@ -76,7 +77,7 @@ def print_table(parsed_output: dict) -> None:
               f"{', '.join(function['name'] for function in hotspots)}")
     print()
 
-def analyze(file_path: str, as_json: bool = False) -> int:
+def analyze(file_path: str, as_json: bool) -> int:
     from analysis.parser_python import parse_python_file
     from analysis.call_graph import build_graph
 
@@ -106,12 +107,34 @@ def analyze(file_path: str, as_json: bool = False) -> int:
 
     print_table(parsed_output)
 
+    if as_json:
+        print('JSON:')
+        output = {
+            "file": file_path,
+            "summary": {
+                "total_functions": len(parsed_output.get("functions", [])),
+                "cyclomatic_complexity": parsed_output["features"].cyclomatic_complexity,
+                "max_nesting_depth": parsed_output["features"].max_nesting_depth,
+                "hotspots": [
+                    function["name"]
+                    for function  in parsed_output.get("functions", [])
+                    if function["features"].cyclomatic_complexity > 10
+                ],
+            },
+            "functions": parsed_output.get("functions", []),
+            "call_graph": graph,
+        }
+        # Remove non-serializable body before dumping
+        for function in output["functions"]:
+            function.pop("body", None)
+        print(json.dumps(output, indent=2, default=str))
+
     return 0
 
 def main():
     parser = build_parser()
     args = parser.parse_args()
-    sys.exit(analyze(file_path=args.file, as_json=False))
+    sys.exit(analyze(file_path=args.file, as_json=args.json))
     
 if __name__ == '__main__':
     main()
