@@ -13,12 +13,12 @@ def test_complexity_calculation_of_dummy_file():
 
     # Assert
     assert parsed is not None
-    assert parsed["cyclomatic_complexity"] == 16
-    assert parsed["max_nesting_depth"] == 3
-    assert parsed["max_loop_depth"] == 2
-    assert parsed["loop_count"] == 3
-    assert parsed["comprehension_count"] == 4
-    assert parsed["is_recursive"] is False
+    assert parsed["features"].cyclomatic_complexity == 16
+    assert parsed["features"].max_nesting_depth == 3
+    assert parsed["features"].max_loop_depth == 2
+    assert parsed["features"].loop_count == 3
+    assert parsed["features"].comprehension_count == 4
+    assert parsed["features"].is_recursive is False
 
 
 def test_parse_python_file_returns_none_for_nonexistent_path():

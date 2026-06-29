@@ -35,12 +35,12 @@ def factorial(n):
     assert len(visitor.functions) == 1
     func_data = visitor.functions[0]
 
-    assert func_data["is_recursive"] is True
-    assert "len" in func_data["unique_builtin_calls"]
-    assert "sum" in func_data["unique_builtin_calls"]
-    assert func_data["builtin_call_count"] == 2
+    assert func_data["features"].is_recursive is True
+    assert "len" in func_data["features"].unique_builtin_calls
+    assert "sum" in func_data["features"].unique_builtin_calls
+    assert func_data["features"].builtin_call_count == 2
 
-    callees = [edge["callee"] for edge in func_data["call_edges"]]
+    callees = [edge["callee"] for edge in func_data["features"].call_edges]
     assert "factorial" in callees
     assert "len" in callees
     assert "sum" in callees
@@ -68,9 +68,9 @@ def nested_loops():
     assert len(visitor.functions) == 1
     func_data = visitor.functions[0]
 
-    assert func_data["loop_count"] == 3
-    assert func_data["max_loop_depth"] == 3
-    assert func_data["comprehension_count"] == 2
+    assert func_data["features"].loop_count == 3
+    assert func_data["features"].max_loop_depth == 3
+    assert func_data["features"].comprehension_count == 2
 
 
 def test_halstead_metrics_for_basic_expressions(run_visitor):
@@ -95,10 +95,10 @@ b = a * 3
     assert 2 in visitor.unique_operands
     assert 3 in visitor.unique_operands
 
-    assert features["halstead_vocabulary"] == 7
-    assert features["halstead_length"] == 8
-    assert features["halstead_difficulty"] > 0
-    assert features["halstead_volume"] > 0
+    assert features.halstead_vocabulary == 7
+    assert features.halstead_length == 8
+    assert features.halstead_difficulty > 0
+    assert features.halstead_volume > 0
 
 
 def test_empty_input_produces_base_metrics(run_visitor):
@@ -111,17 +111,17 @@ def test_empty_input_produces_base_metrics(run_visitor):
     features = extract_features(visitor)
 
     # Assert
-    assert features["cyclomatic_complexity"] == 1
-    assert features["max_nesting_depth"] == 0
-    assert features["max_loop_depth"] == 0
-    assert features["loop_count"] == 0
-    assert features["comprehension_count"] == 0
-    assert features["is_recursive"] is False
-    assert features["builtin_call_count"] == 0
-    assert features["halstead_vocabulary"] == 0
-    assert features["halstead_length"] == 0
-    assert features["halstead_difficulty"] == 0
-    assert features["halstead_volume"] == 0
+    assert features.cyclomatic_complexity == 1
+    assert features.max_nesting_depth == 0
+    assert features.max_loop_depth == 0
+    assert features.loop_count == 0
+    assert features.comprehension_count == 0
+    assert features.is_recursive is False
+    assert features.builtin_call_count == 0
+    assert features.halstead_vocabulary == 0
+    assert features.halstead_length == 0
+    assert features.halstead_difficulty == 0
+    assert features.halstead_volume == 0
 
 
 def test_try_except_blocks_increase_cyclomatic_complexity(run_visitor):
@@ -144,4 +144,4 @@ def try_example():
     assert len(visitor.functions) == 1
     func_data = visitor.functions[0]
     # base complexity (1) + len(handlers) (2) + except nodes visited (2) = 5
-    assert func_data["cyclomatic_complexity"] == 5
+    assert func_data["features"].cyclomatic_complexity == 5
