@@ -23,6 +23,6 @@ def parse_python_file(file_path: str):
     features = extract_features(visitor)
     
     return {
-        **features,
         'functions': functions,
+        'features': features
     }
