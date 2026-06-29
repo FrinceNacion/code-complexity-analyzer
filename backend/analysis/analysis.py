@@ -14,15 +14,6 @@ def build_parser() -> argparse.ArgumentParser:
     )
     return parser
  
-def risk_label(complexity: int) -> str:
-    if complexity <= 4:
-        return "low"
-    if complexity <= 7:
-        return "medium"
-    if complexity <= 10:
-        return "high"
-    return "critical"
- 
 def print_table(parsed_output: dict) -> None:
     functions = parsed_output.get("functions", [])
  
@@ -37,7 +28,7 @@ def print_table(parsed_output: dict) -> None:
     cc_w = len("Cyclomatic Complexity")
     depth_w = len("Nesting Depth")
     loops_w = len("Loops")
-    risk_w = len("Risk")
+    risk_w = max(len(f['features'].risk_level) for f in functions)
 
     header = (
         f"{'Function':<{name_w}}  "
@@ -68,14 +59,13 @@ def print_table(parsed_output: dict) -> None:
  
     # Sort by cyclomatic complexity descending (worst first)
     for function in sorted(functions, key=lambda x: x["features"].cyclomatic_complexity, reverse=True):
-        risk = risk_label(function["features"].cyclomatic_complexity)
         print(
             f"{function['name']:<{name_w}}  "
             f"{function['line']:>{line_w}}  "
             f"{function['features'].cyclomatic_complexity:>{cc_w}}  "
             f"{function['features'].max_nesting_depth:>{depth_w}}  "
             f"{function['features'].loop_count:>{loops_w}}  "
-            f"{risk:<{risk_w}}"
+            f"{function['features'].risk_level:<{risk_w}}"
         )
  
     print(separator)
