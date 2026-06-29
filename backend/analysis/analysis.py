@@ -23,8 +23,8 @@ def risk_label(complexity: int) -> str:
         return "high"
     return "critical"
  
-def print_table(features: dict) -> None:
-    functions = features.get("functions", [])
+def print_table(parsed_output: dict) -> None:
+    functions = parsed_output.get("functions", [])
  
     if not functions:
         print("No functions found in file.")
@@ -58,10 +58,10 @@ def print_table(features: dict) -> None:
     )
  
     print()
-    print(f"  File: {features.get('file_path', '')}")
+    print(f"  File: {parsed_output.get('file_path', '')}")
     print(f"  Functions: {len(functions)}  |  "
-          f"File cyclomatic complexity: {features['features'].cyclomatic_complexity}  |  "
-          f"Max depth: {features['features'].max_nesting_depth}")
+          f"File cyclomatic complexity: {parsed_output['features'].cyclomatic_complexity}  |  "
+          f"Max depth: {parsed_output['features'].max_nesting_depth}")
     print()
     print(header)
     print(separator)
@@ -104,16 +104,16 @@ def analyze(file_path: str, as_json: bool = False) -> int:
         print(f"Error: only .py files are supported (got {file_path})", file=sys.stderr)
         return 1
 
-    features = parse_python_file(file_path)
+    parsed_output = parse_python_file(file_path)
 
-    if features is None:
+    if parsed_output is None:
         print("Error: failed to parse file.", file=sys.stderr)
         return 1
     
-    features['file_path'] = file_path
-    graph = build_graph(features)
+    parsed_output['file_path'] = file_path
+    graph = build_graph(parsed_output)
 
-    print_table(features)
+    print_table(parsed_output)
 
     return 0
 
