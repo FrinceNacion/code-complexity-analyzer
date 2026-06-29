@@ -16,9 +16,16 @@ def build_parser() -> argparse.ArgumentParser:
  
 def print_table(parsed_output: dict) -> None:
     functions = parsed_output.get("functions", [])
+
+    print()
+    print(f"  File: {parsed_output.get('file_path', '')}")
+    print(f"  Functions: {len(functions)}  |  "
+          f"File cyclomatic complexity: {parsed_output['features'].cyclomatic_complexity}  |  "
+          f"Max depth: {parsed_output['features'].max_nesting_depth}")
+    print()
  
     if not functions:
-        print("No functions found in file.")
+        print(f"  No functions found in file. \n")
         return
  
     # Column widths
@@ -48,12 +55,6 @@ def print_table(parsed_output: dict) -> None:
         f"{'-' * risk_w}"
     )
  
-    print()
-    print(f"  File: {parsed_output.get('file_path', '')}")
-    print(f"  Functions: {len(functions)}  |  "
-          f"File cyclomatic complexity: {parsed_output['features'].cyclomatic_complexity}  |  "
-          f"Max depth: {parsed_output['features'].max_nesting_depth}")
-    print()
     print(header)
     print(separator)
  
