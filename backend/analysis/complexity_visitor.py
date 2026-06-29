@@ -211,10 +211,10 @@ class ComplexityVisitor(ast.NodeVisitor):
         features = extract_features(func_visitor)
 
         self.functions.append({
-            "name": node.name,
-            "body": node.body,
-            "line": node.lineno,
-            **features
+            'name': node.name,
+            'body': node.body,
+            'line': node.lineno,
+            'features': features
         })
 
         self.generic_visit(node)
