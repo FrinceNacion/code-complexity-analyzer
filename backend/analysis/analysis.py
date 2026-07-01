@@ -30,13 +30,15 @@ def print_table(parsed_output: dict) -> None:
         return
  
     # Column widths
-    name_w = max(len(f["name"]) for f in functions)
+    name_w = max(len(function["name"]) for function in functions)
     name_w = max(name_w, 8)
     line_w = len("Line No.")
     cc_w = len("Cyclomatic Complexity")
     depth_w = len("Nesting Depth")
     loops_w = len("Loops")
-    risk_w = max(len(f['features'].risk_level) for f in functions)
+    risk_w = max(len(function['features'].risk_level) for function in functions)
+    big_o_w = max(len(str(function.get("big_o"))) for function in functions)
+    big_o_w = max(big_o_w, len("Big-O"))
 
     header = (
         f"{'Function':<{name_w}}  "
