@@ -1,0 +1,942 @@
+code,big_o_label
+"def op_add(a, b): return a + b",O(1)
+def get_first(lst): return lst[0] if lst else None,O(1)
+"def get_val(d, k): return d.get(k, 0)",O(1)
+"def swap(x, y): temp = x; x = y; y = temp; return x, y",O(1)
+def compute_area(r): return 3.14159 * r * r,O(1)
+"def check_flag(config): return config.get('active', False) or config.get('debug', False)",O(1)
+def check_even(n): return n % 2 == 0,O(1)
+def sign(val): return 1 if val > 0 else (-1 if val < 0 else 0),O(1)
+"def constant_loop():
+    total = 0
+    for i in range(10):
+        total += i
+    return total",O(1)
+"def complex_o1(x, y):
+    z = x + y
+    w = x * y
+    if z > w:
+        return z - w
+    else:
+        return w - z",O(1)
+"def lookup_phone(directory, name): return directory[name] if name in directory else None",O(1)
+"def distance(p1, p2): return ((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)**0.5",O(1)
+"def get_head_tail(arr): return arr[0], arr[-1] if len(arr) > 0 else (None, None)",O(1)
+"def bitwise_op(x, y): return (x & y) | (x ^ y)",O(1)
+def convert_temp(c): return c * 9/5 + 32,O(1)
+def is_leap_year(year): return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0),O(1)
+def volume_sphere(radius): return (4/3) * 3.14159 * (radius ** 3),O(1)
+"def quadratic_formula(a, b, c): d = b**2 - 4*a*c; return (-b + d**0.5)/(2*a), (-b - d**0.5)/(2*a)",O(1)
+"def extract_meta(info): return {'id': info.id, 'name': info.name, 'created': True}",O(1)
+"def constant_matrix_mult(m1, m2):
+    res = [[0, 0], [0, 0]]
+    for i in range(2):
+        for j in range(2):
+            for k in range(2):
+                res[i][j] += m1[i][k] * m2[k][j]
+    return res",O(1)
+"def dict_contains(d, k): return k in d",O(1)
+"def access_field(obj): return obj.field if hasattr(obj, 'field') else None",O(1)
+def is_positive(x): return x > 0,O(1)
+"def combine_hashes(h1, h2): return h1 ^ h2",O(1)
+"def modulo_check(val, divisor): return val % divisor == 0",O(1)
+def compute_tax(income): return income * 0.15 if income < 50000 else income * 0.25,O(1)
+"def check_inside_bounds(x, y, w, h): return 0 <= x < w and 0 <= y < h",O(1)
+"def simple_string_format(name, age): return f'Name: {name}, Age: {age}'",O(1)
+"def compute_discount(price, pct): return price * (1.0 - pct)",O(1)
+def is_empty_check(s): return len(s) == 0,O(1)
+"def binary_search(arr, val):
+    l, r = 0, len(arr) - 1
+    while l <= r:
+        m = (l + r) // 2
+        if arr[m] == val: return m
+        elif arr[m] < val: l = m + 1
+        else: r = m - 1
+    return -1",O(log n)
+"def div_by_two(n):
+    count = 0
+    while n > 1:
+        n //= 2
+        count += 1
+    return count",O(log n)
+"def power_of_two(n):
+    if n <= 0: return False
+    while n > 1:
+        if n % 2 != 0: return False
+        n //= 2
+    return True",O(log n)
+"def div_by_three(n):
+    steps = 0
+    while n > 1:
+        n = n // 3
+        steps += 1
+    return steps",O(log n)
+"def binary_search_insert(arr, x):
+    low, high = 0, len(arr)
+    while low < high:
+        mid = (low + high) // 2
+        if arr[mid] < x: low = mid + 1
+        else: high = mid
+    return low",O(log n)
+"def find_peak_element(nums):
+    low, high = 0, len(nums) - 1
+    while low < high:
+        mid = (low + high) // 2
+        if nums[mid] > nums[mid + 1]: high = mid
+        else: low = mid + 1
+    return low",O(log n)
+"def sqrt_binary_search(n):
+    if n < 0: return -1
+    low, high = 0, n
+    ans = -1
+    while low <= high:
+        mid = (low + high) // 2
+        if mid * mid <= n:
+            ans = mid
+            low = mid + 1
+        else:
+            high = mid - 1
+    return ans",O(log n)
+"def count_digits(n):
+    if n == 0: return 1
+    count = 0
+    while n > 0:
+        n //= 10
+        count += 1
+    return count",O(log n)
+"def power_log(x, y):
+    res = 1
+    while y > 0:
+        if y % 2 == 1: res *= x
+        x *= x
+        y //= 2
+    return res",O(log n)
+"def bisection_method(f, a, b, tol):
+    while (b - a) / 2.0 > tol:
+        mid = (a + b) / 2.0
+        if f(mid) == 0: return mid
+        elif f(a) * f(mid) < 0: b = mid
+        else: a = mid
+    return (a + b) / 2.0",O(log n)
+"def gcd_log(a, b):
+    while b > 0:
+        a, b = b, a % b
+    return a",O(log n)
+"def binary_search_first_occurrence(arr, x):
+    l, r = 0, len(arr) - 1
+    res = -1
+    while l <= r:
+        mid = (l + r) // 2
+        if arr[mid] == x:
+            res = mid
+            r = mid - 1
+        elif arr[mid] < x: l = mid + 1
+        else: r = mid - 1
+    return res",O(log n)
+"def binary_search_last_occurrence(arr, x):
+    l, r = 0, len(arr) - 1
+    res = -1
+    while l <= r:
+        mid = (l + r) // 2
+        if arr[mid] == x:
+            res = mid
+            l = mid + 1
+        elif arr[mid] < x: l = mid + 1
+        else: r = mid - 1
+    return res",O(log n)
+"def div_by_four(n):
+    cnt = 0
+    while n > 0:
+        n = n // 4
+        cnt += 1
+    return cnt",O(log n)
+"def shift_right_log(n):
+    steps = 0
+    while n > 0:
+        n = n >> 1
+        steps += 1
+    return steps",O(log n)
+"def search_in_rotated_array(arr, target):
+    l, r = 0, len(arr) - 1
+    while l <= r:
+        mid = (l + r) // 2
+        if arr[mid] == target: return mid
+        if arr[l] <= arr[mid]:
+            if arr[l] <= target < arr[mid]: r = mid - 1
+            else: l = mid + 1
+        else:
+            if arr[mid] < target <= arr[r]: l = mid + 1
+            else: r = mid - 1
+    return -1",O(log n)
+"def binary_search_infinite_array(reader, target):
+    low, high = 0, 1
+    while reader.get(high) < target:
+        low = high
+        high *= 2
+    while low <= high:
+        mid = (low + high) // 2
+        val = reader.get(mid)
+        if val == target: return mid
+        elif val < target: low = mid + 1
+        else: high = mid - 1
+    return -1",O(log n)
+"def matrix_binary_search(matrix, target):
+    if not matrix: return False
+    rows, cols = len(matrix), len(matrix[0])
+    l, r = 0, rows * cols - 1
+    while l <= r:
+        mid = (l + r) // 2
+        val = matrix[mid // cols][mid % cols]
+        if val == target: return True
+        elif val < target: l = mid + 1
+        else: r = mid - 1
+    return False",O(log n)
+"def power_of_three(n):
+    if n <= 0: return False
+    while n % 3 == 0:
+        n //= 3
+    return n == 1",O(log n)
+"def binary_search_float(target, low, high, tol):
+    while high - low > tol:
+        mid = (low + high) / 2.0
+        if mid * mid * mid < target: low = mid
+        else: high = mid
+    return (low + high) / 2.0",O(log n)
+"def half_step_reduction(val):
+    steps = 0
+    while val > 2.0:
+        val = val * 0.5
+        steps += 1
+    return steps",O(log n)
+"def binary_search_recursive(arr, low, high, x):
+    if high >= low:
+        mid = (high + low) // 2
+        if arr[mid] == x: return mid
+        elif arr[mid] > x: return binary_search_recursive(arr, low, mid - 1, x)
+        else: return binary_search_recursive(arr, mid + 1, high, x)
+    return -1",O(log n)
+"def find_kth_missing_binary(arr, k):
+    l, r = 0, len(arr) - 1
+    while l <= r:
+        mid = (l + r) // 2
+        if arr[mid] - (mid + 1) < k: l = mid + 1
+        else: r = mid - 1
+    return l + k",O(log n)
+"def div_by_five(n):
+    steps = 0
+    while n > 1:
+        n = n // 5
+        steps += 1
+    return steps",O(log n)
+"def bit_length_count(n):
+    length = 0
+    while n > 0:
+        n >>= 1
+        length += 1
+    return length",O(log n)
+"def fast_exponentiation_steps(n):
+    steps = 0
+    while n > 0:
+        if n % 2 == 1: n -= 1
+        else: n //= 2
+        steps += 1
+    return steps",O(log n)
+"def binary_search_closest(arr, target):
+    n = len(arr)
+    if target <= arr[0]: return arr[0]
+    if target >= arr[n - 1]: return arr[n - 1]
+    i, j = 0, n
+    while i < j:
+        mid = (i + j) // 2
+        if arr[mid] == target: return arr[mid]
+        if target < arr[mid]:
+            if mid > 0 and target > arr[mid - 1]:
+                return arr[mid - 1] if target - arr[mid - 1] < arr[mid] - target else arr[mid]
+            j = mid
+        else:
+            if mid < n - 1 and target < arr[mid + 1]:
+                return arr[mid] if target - arr[mid] < arr[mid + 1] - target else arr[mid + 1]
+            i = mid + 1
+    return arr[i]",O(log n)
+"def count_leading_zeros(n):
+    count = 0
+    while n > 0:
+        n = n // 2
+        count += 1
+    return 32 - count",O(log n)
+"def power_of_four_check(n):
+    if n <= 0: return False
+    while n > 1:
+        if n % 4 != 0: return False
+        n //= 4
+    return True",O(log n)
+"def binary_search_matrix_row(matrix, target, row):
+    l, r = 0, len(matrix[row]) - 1
+    while l <= r:
+        mid = (l + r) // 2
+        if matrix[row][mid] == target: return mid
+        elif matrix[row][mid] < target: l = mid + 1
+        else: r = mid - 1
+    return -1",O(log n)
+"def find_max(lst):
+    val = lst[0]
+    for x in lst:
+        if x > val: val = x
+    return val",O(n)
+"def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target: return i
+    return -1",O(n)
+"def sum_list(arr):
+    s = 0
+    for x in arr: s += x
+    return s",O(n)
+def list_comp_double(arr): return [x * 2 for x in arr],O(n)
+"def count_occurrences(arr, val):
+    count = 0
+    for x in arr:
+        if x == val: count += 1
+    return count",O(n)
+"def find_min(lst):
+    val = lst[0]
+    for x in lst:
+        if x < val: val = x
+    return val",O(n)
+def filter_even(lst): return [x for x in lst if x % 2 == 0],O(n)
+"def has_duplicates_linear(lst):
+    seen = set()
+    for x in lst:
+        if x in seen: return True
+        seen.add(x)
+    return False",O(n)
+"def count_letters(s):
+    d = {}
+    for c in s:
+        d[c] = d.get(c, 0) + 1
+    return d",O(n)
+"def recursive_linear_sum(n):
+    if n <= 1: return n
+    return n + recursive_linear_sum(n - 1)",O(n)
+"def string_reverse(s):
+    res = ''
+    for c in s: res = c + res
+    return res",O(n)
+"def linear_sequence(n):
+    res = []
+    for i in range(n):
+        res.append(i)
+    return res",O(n)
+"def average_list(arr):
+    if not arr: return 0
+    total = 0
+    for x in arr: total += x
+    return total / len(arr)",O(n)
+"def join_words(words):
+    res = ''
+    for w in words: res += w + ' '
+    return res",O(n)
+"def elementwise_sum(arr1, arr2):
+    res = []
+    for i in range(len(arr1)):
+        res.append(arr1[i] + arr2[i])
+    return res",O(n)
+"def filter_names(names, char):
+    return [n for n in names if n.startswith(char)]",O(n)
+"def check_all_positive(arr):
+    for x in arr:
+        if x <= 0: return False
+    return True",O(n)
+"def max_difference_linear(arr):
+    min_val = arr[0]
+    max_diff = 0
+    for x in arr:
+        max_diff = max(max_diff, x - min_val)
+        min_val = min(min_val, x)
+    return max_diff",O(n)
+"def cumulative_sum(arr):
+    res = []
+    s = 0
+    for x in arr:
+        s += x
+        res.append(s)
+    return res",O(n)
+"def map_keys(d):
+    keys = []
+    for k in d:
+        keys.append(k)
+    return keys",O(n)
+"def recursive_countdown(n):
+    if n <= 0: return
+    recursive_countdown(n - 1)",O(n)
+"def count_upper_case(s):
+    cnt = 0
+    for c in s:
+        if c.isupper(): cnt += 1
+    return cnt",O(n)
+"def scale_vector(v, f):
+    res = []
+    for x in v: res.append(x * f)
+    return res",O(n)
+"def find_index_of_all(arr, val):
+    indices = []
+    for i, x in enumerate(arr):
+        if x == val: indices.append(i)
+    return indices",O(n)
+"def merge_two_sorted_lists(l1, l2):
+    i = j = 0
+    res = []
+    while i < len(l1) and j < len(l2):
+        if l1[i] < l2[j]:
+            res.append(l1[i])
+            i += 1
+        else:
+            res.append(l2[j])
+            j += 1
+    res.extend(l1[i:])
+    res.extend(l2[j:])
+    return res",O(n)
+"def list_contains_word(words, target):
+    for w in words:
+        if w == target: return True
+    return False",O(n)
+"def remove_element(arr, item):
+    return [x for x in arr if x != item]",O(n)
+"def sum_of_digits_str(s):
+    total = 0
+    for c in s:
+        if c.isdigit(): total += int(c)
+    return total",O(n)
+"def array_product(arr):
+    p = 1
+    for x in arr: p *= x
+    return p",O(n)
+"def rotate_array_by_one(arr):
+    if not arr: return arr
+    first = arr[0]
+    for i in range(len(arr) - 1):
+        arr[i] = arr[i+1]
+    arr[-1] = first
+    return arr",O(n)
+def sort_numbers(arr): return sorted(arr),O(n log n)
+"def sort_and_get_median(arr):
+    s = sorted(arr)
+    n = len(s)
+    return s[n // 2] if n % 2 != 0 else (s[n // 2 - 1] + s[n // 2]) / 2.0",O(n log n)
+"def top_k_elements(arr, k): return sorted(arr, reverse=True)[:k]",O(n log n)
+"def sort_dictionary_by_values(d): return sorted(d.items(), key=lambda x: x[1])",O(n log n)
+"def binary_search_each_element(arr1, arr2):
+    res = []
+    for x in arr1:
+        l, r = 0, len(arr2) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if arr2[mid] == x: res.append(x); break
+            elif arr2[mid] < x: l = mid + 1
+            else: r = mid - 1
+    return res",O(n log n)
+"def sort_strings_by_len(words): return sorted(words, key=len)",O(n log n)
+"def heap_sort(arr):
+    import heapq
+    heapq.heapify(arr)
+    return [heapq.heappop(arr) for _ in range(len(arr))]",O(n log n)
+"def divide_loop_nested_in_loop(n):
+    total = 0
+    for i in range(n):
+        temp = n
+        while temp > 1:
+            temp //= 2
+            total += 1
+    return total",O(n log n)
+"def merge_sort_simple(arr):
+    if len(arr) <= 1: return arr
+    mid = len(arr) // 2
+    left = merge_sort_simple(arr[:mid])
+    right = merge_sort_simple(arr[mid:])
+    res = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            res.append(left[i]); i += 1
+        else:
+            res.append(right[j]); j += 1
+    res.extend(left[i:])
+    res.extend(right[j:])
+    return res",O(n log n)
+"def quick_sort_simple(arr):
+    if len(arr) <= 1: return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort_simple(left) + middle + quick_sort_simple(right)",O(n log n)
+"def gcd_for_all(arr):
+    def gcd(a, b):
+        while b: a, b = b, a % b
+        return a
+    res = arr[0]
+    for x in arr[1:]:
+        res = gcd(res, x)
+    return res",O(n log n)
+"def binary_insert_all(arr):
+    res = []
+    for x in arr:
+        l, r = 0, len(res)
+        while l < r:
+            mid = (l + r) // 2
+            if res[mid] < x: l = mid + 1
+            else: r = mid
+        res.insert(l, x)
+    return res",O(n log n)
+"def three_way_partition_sort(arr):
+    if len(arr) <= 1: return arr
+    p = arr[0]
+    less = [x for x in arr[1:] if x < p]
+    greater = [x for x in arr[1:] if x >= p]
+    return three_way_partition_sort(less) + [p] + three_way_partition_sort(greater)",O(n log n)
+def sorted_squares(arr): return sorted([x**2 for x in arr]),O(n log n)
+def unique_sorted(arr): return sorted(list(set(arr))),O(n log n)
+"def sorted_char_count(s):
+    chars = sorted(list(s))
+    return ''.join(chars)",O(n log n)
+"def check_anagram_sort(s1, s2): return sorted(s1) == sorted(s2)",O(n log n)
+"def find_pairs_with_sort(arr, target):
+    s = sorted(arr)
+    l, r = 0, len(s) - 1
+    pairs = []
+    while l < r:
+        val = s[l] + s[r]
+        if val == target: pairs.append((s[l], s[r])); l += 1; r -= 1
+        elif val < target: l += 1
+        else: r -= 1
+    return pairs",O(n log n)
+"def maximum_product_of_three(arr):
+    s = sorted(arr)
+    return max(s[-1] * s[-2] * s[-3], s[0] * s[1] * s[-1])",O(n log n)
+"def sort_matrix_rows(matrix):
+    res = []
+    for row in matrix:
+        res.append(sorted(row))
+    return res",O(n log n)
+"def sort_by_custom_key(arr): return sorted(arr, key=lambda x: (x % 3, x))",O(n log n)
+"def count_smaller_after_self_sort(arr):
+    s = sorted(arr)
+    res = []
+    for x in arr:
+        l, r = 0, len(s) - 1
+        pos = -1
+        while l <= r:
+            mid = (l + r) // 2
+            if s[mid] == x:
+                pos = mid
+                r = mid - 1
+            elif s[mid] < x: l = mid + 1
+            else: r = mid - 1
+        res.append(pos)
+    return res",O(n log n)
+"def division_loop_for_items(items):
+    res = 0
+    for item in items:
+        val = item
+        while val > 1:
+            val = val // 3
+            res += 1
+    return res",O(n log n)
+"def bit_length_for_all(arr):
+    res = []
+    for x in arr:
+        bits = 0
+        val = x
+        while val > 0:
+            val >>= 1
+            bits += 1
+        res.append(bits)
+    return res",O(n log n)
+"def sort_tuple_list(lst): return sorted(lst, key=lambda x: x[0] + x[1])",O(n log n)
+"def sort_by_frequency(arr):
+    from collections import Counter
+    counts = Counter(arr)
+    return sorted(arr, key=lambda x: (-counts[x], x))",O(n log n)
+"def binary_search_matrix_columns(matrix, target):
+    res = []
+    for row in matrix:
+        l, r = 0, len(row) - 1
+        while l <= r:
+            mid = (l + r) // 2
+            if row[mid] == target: res.append(mid); break
+            elif row[mid] < target: l = mid + 1
+            else: r = mid - 1
+    return res",O(n log n)
+"def merge_intervals(intervals):
+    if not intervals: return []
+    s = sorted(intervals, key=lambda x: x[0])
+    res = [s[0]]
+    for current in s[1:]:
+        prev = res[-1]
+        if current[0] <= prev[1]: prev[1] = max(prev[1], current[1])
+        else: res.append(current)
+    return res",O(n log n)
+"def find_closest_elements_sort(arr, k, x):
+    s = sorted(arr, key=lambda val: abs(val - x))
+    return sorted(s[:k])",O(n log n)
+"def recursive_divide_nlogn(n):
+    if n <= 1: return
+    for i in range(n):
+        pass
+    recursive_divide_nlogn(n // 2)
+    recursive_divide_nlogn(n // 2)",O(n log n)
+"def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr",O(n^2)
+"def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_idx]: min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr",O(n^2)
+"def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i-1
+        while j >=0 and key < arr[j] :
+            arr[j+1] = arr[j]
+            j -= 1
+        arr[j+1] = key
+    return arr",O(n^2)
+"def find_all_pairs(arr):
+    pairs = []
+    for x in arr:
+        for y in arr:
+            pairs.append((x, y))
+    return pairs",O(n^2)
+"def check_duplicates_quadratic(arr):
+    for i in range(len(arr)):
+        for j in range(i + 1, len(arr)):
+            if arr[i] == arr[j]: return True
+    return False",O(n^2)
+"def matrix_multiplication(A, B):
+    n = len(A)
+    C = [[0]*n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                C[i][j] += A[i][k] * B[k][j]
+    return C",O(n^2)
+"def print_matrix_elements(matrix):
+    for row in matrix:
+        for val in row:
+            print(val)",O(n^2)
+"def find_common_elements_nested(arr1, arr2):
+    common = []
+    for x in arr1:
+        for y in arr2:
+            if x == y and x not in common:
+                common.append(x)
+    return common",O(n^2)
+"def nested_sum_combinations(arr):
+    total = 0
+    for i in range(len(arr)):
+        for j in range(len(arr)):
+            total += arr[i] + arr[j]
+    return total",O(n^2)
+"def generate_grid(n):
+    grid = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            row.append(i * j)
+        grid.append(row)
+    return grid",O(n^2)
+"def pairwise_differences(arr):
+    diffs = []
+    for i in range(len(arr)):
+        for j in range(len(arr)):
+            diffs.append(abs(arr[i] - arr[j]))
+    return diffs",O(n^2)
+"def contains_subsequence_nested(arr, sub):
+    for i in range(len(arr) - len(sub) + 1):
+        match = True
+        for j in range(len(sub)):
+            if arr[i+j] != sub[j]: match = False; break
+        if match: return True
+    return False",O(n^2)
+"def bubble_sort_descending(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] < arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr",O(n^2)
+"def all_pairs_sum_check(arr, target):
+    for i in range(len(arr)):
+        for j in range(i + 1, len(arr)):
+            if arr[i] + arr[j] == target: return True
+    return False",O(n^2)
+"def compute_distance_matrix(points):
+    n = len(points)
+    dist = [[0.0]*n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            dist[i][j] = ((points[i][0]-points[j][0])**2 + (points[i][1]-points[j][1])**2)**0.5
+    return dist",O(n^2)
+"def find_target_pair(nums, target):
+    for i in range(len(nums)):
+        for j in range(len(nums)):
+            if nums[i] + nums[j] == target and i != j:
+                return nums[i], nums[j]
+    return None",O(n^2)
+"def print_triangle_pattern(n):
+    for i in range(n):
+        for j in range(i + 1):
+            print(j, end='')
+        print()",O(n^2)
+"def count_inversions_nested(arr):
+    count = 0
+    for i in range(len(arr)):
+        for j in range(i + 1, len(arr)):
+            if arr[i] > arr[j]: count += 1
+    return count",O(n^2)
+"def find_max_submatrix_sum_naive(matrix):
+    n = len(matrix)
+    max_sum = 0
+    for i in range(n):
+        for j in range(n):
+            current = 0
+            for x in range(i, n):
+                for y in range(j, n):
+                    current += matrix[x][y]
+            max_sum = max(max_sum, current)
+    return max_sum",O(n^2)
+"def search_in_2d_grid(grid, val):
+    for r in range(len(grid)):
+        for c in range(len(grid[r])):
+            if grid[r][c] == val: return r, c
+    return -1, -1",O(n^2)
+"def element_frequencies_quadratic(arr):
+    res = {}
+    for x in arr:
+        count = 0
+        for y in arr:
+            if x == y: count += 1
+        res[x] = count
+    return res",O(n^2)
+"def compute_similarity_score(arr1, arr2):
+    score = 0
+    for x in arr1:
+        for y in arr2:
+            if x == y: score += 1
+    return score",O(n^2)
+"def selection_sort_strings(words):
+    n = len(words)
+    for i in range(n):
+        min_idx = i
+        for j in range(i+1, n):
+            if len(words[j]) < len(words[min_idx]): min_idx = j
+        words[i], words[min_idx] = words[min_idx], words[i]
+    return words",O(n^2)
+"def remove_duplicates_nested(arr):
+    res = []
+    for x in arr:
+        found = False
+        for y in res:
+            if x == y: found = True; break
+        if not found: res.append(x)
+    return res",O(n^2)
+"def find_closest_pair(arr):
+    min_diff = float('inf')
+    res = None
+    for i in range(len(arr)):
+        for j in range(i + 1, len(arr)):
+            diff = abs(arr[i] - arr[j])
+            if diff < min_diff:
+                min_diff = diff
+                res = (arr[i], arr[j])
+    return res",O(n^2)
+"def list_comp_nested(arr):
+    return [x * y for x in arr for y in arr]",O(n^2)
+"def print_times_table(n):
+    for i in range(1, n + 1):
+        for j in range(1, n + 1):
+            print(f'{i*j:4}', end='')
+        print()",O(n^2)
+"def contains_duplicate_subgrid(matrix):
+    n = len(matrix)
+    for r1 in range(n):
+        for c1 in range(n):
+            for r2 in range(n):
+                for c2 in range(n):
+                    if (r1, c1) != (r2, c2) and matrix[r1][c1] == matrix[r2][c2]:
+                        return True
+    return False",O(n^2)
+"def count_smaller_elements_nested(arr):
+    res = []
+    for i in range(len(arr)):
+        count = 0
+        for j in range(len(arr)):
+            if arr[j] < arr[i]: count += 1
+        res.append(count)
+    return res",O(n^2)
+"def print_inverted_triangle(n):
+    for i in range(n, 0, -1):
+        for j in range(i):
+            print('*', end='')
+        print()",O(n^2)
+"def fibonacci_naive(n):
+    if n <= 1: return n
+    return fibonacci_naive(n - 1) + fibonacci_naive(n - 2)",O(2^n)
+"def power_set(s):
+    if not s: return [[]]
+    elem = s[0]
+    rest = power_set(s[1:])
+    return rest + [r + [elem] for r in rest]",O(2^n)
+"def coin_change_recursive(coins, amount, index):
+    if amount == 0: return 1
+    if amount < 0 or index >= len(coins): return 0
+    return coin_change_recursive(coins, amount - coins[index], index) + coin_change_recursive(coins, amount, index + 1)",O(2^n)
+"def knapsack_01_recursive(weights, values, capacity, n):
+    if n == 0 or capacity == 0: return 0
+    if weights[n-1] > capacity: return knapsack_01_recursive(weights, values, capacity, n-1)
+    return max(values[n-1] + knapsack_01_recursive(weights, values, capacity-weights[n-1], n-1), knapsack_01_recursive(weights, values, capacity, n-1))",O(2^n)
+"def subsets_sum_target(arr, target, index):
+    if target == 0: return 1
+    if index >= len(arr): return 0
+    return subsets_sum_target(arr, target - arr[index], index + 1) + subsets_sum_target(arr, target, index + 1)",O(2^n)
+"def subset_sum_exists(arr, n, target):
+    if target == 0: return True
+    if n == 0: return False
+    if arr[n-1] > target: return subset_sum_exists(arr, n-1, target)
+    return subset_sum_exists(arr, n-1, target) or subset_sum_exists(arr, n-1, target-arr[n-1])",O(2^n)
+"def climb_stairs_naive(n):
+    if n <= 1: return 1
+    return climb_stairs_naive(n - 1) + climb_stairs_naive(n - 2)",O(2^n)
+"def climb_stairs_three_steps(n):
+    if n < 0: return 0
+    if n == 0: return 1
+    return climb_stairs_three_steps(n-1) + climb_stairs_three_steps(n-2) + climb_stairs_three_steps(n-3)",O(2^n)
+"def tower_of_hanoi(n, source, destination, auxiliary):
+    if n == 1:
+        return 1
+    steps = tower_of_hanoi(n - 1, source, auxiliary, destination)
+    steps += 1
+    steps += tower_of_hanoi(n - 1, auxiliary, destination, source)
+    return steps",O(2^n)
+"def rod_cutting_naive(price, n):
+    if n <= 0: return 0
+    max_val = -1
+    for i in range(n):
+        max_val = max(max_val, price[i] + rod_cutting_naive(price, n - i - 1))
+    return max_val",O(2^n)
+"def lev_distance_recursive(s1, s2, m, n):
+    if m == 0: return n
+    if n == 0: return m
+    if s1[m-1] == s2[n-1]: return lev_distance_recursive(s1, s2, m-1, n-1)
+    return 1 + min(lev_distance_recursive(s1, s2, m, n-1), lev_distance_recursive(s1, s2, m-1, n), lev_distance_recursive(s1, s2, m-1, n-1))",O(2^n)
+"def partitions_count(n, m):
+    if n == 0: return 1
+    if n < 0 or m == 0: return 0
+    return partitions_count(n - m, m) + partitions_count(n, m - 1)",O(2^n)
+"def wildcard_match_recursive(pattern, text, p_idx, t_idx):
+    if p_idx == len(pattern): return t_idx == len(text)
+    if pattern[p_idx] == '*':
+        return (wildcard_match_recursive(pattern, text, p_idx + 1, t_idx) or
+                (t_idx < len(text) and wildcard_match_recursive(pattern, text, p_idx, t_idx + 1)))
+    if t_idx < len(text) and (pattern[p_idx] == '?' or pattern[p_idx] == text[t_idx]):
+        return wildcard_match_recursive(pattern, text, p_idx + 1, t_idx + 1)
+    return False",O(2^n)
+"def matrix_chain_order_recursive(p, i, j):
+    if i == j: return 0
+    min_val = float('inf')
+    for k in range(i, j):
+        count = (matrix_chain_order_recursive(p, i, k) +
+                 matrix_chain_order_recursive(p, k + 1, j) +
+                 p[i-1] * p[k] * p[j])
+        if count < min_val: min_val = count
+    return min_val",O(2^n)
+"def minimum_partition_difference(arr, n, sum_calculated, sum_total):
+    if n == 0: return abs((sum_total - sum_calculated) - sum_calculated)
+    return min(minimum_partition_difference(arr, n - 1, sum_calculated + arr[n - 1], sum_total),
+               minimum_partition_difference(arr, n - 1, sum_calculated, sum_total))",O(2^n)
+"def fibonacci_three(n):
+    if n <= 0: return 0
+    if n == 1: return 1
+    return fibonacci_three(n-1) + fibonacci_three(n-2) + fibonacci_three(n-3)",O(2^n)
+"def subset_sum_count(arr, index, current_sum, target):
+    if current_sum == target: return 1
+    if index >= len(arr): return 0
+    return subset_sum_count(arr, index + 1, current_sum + arr[index], target) + subset_sum_count(arr, index + 1, current_sum, target)",O(2^n)
+"def naive_recursive_matching(p, s):
+    if not p: return not s
+    first_match = bool(s) and p[0] in {s[0], '.'}
+    if len(p) >= 2 and p[1] == '*':
+        return naive_recursive_matching(p[2:], s) or (first_match and naive_recursive_matching(p, s[1:]))
+    return first_match and naive_recursive_matching(p[1:], s[1:])",O(2^n)
+"def binary_strings_no_consecutive_ones(n):
+    if n == 1: return 2
+    if n == 2: return 3
+    return binary_strings_no_consecutive_ones(n - 1) + binary_strings_no_consecutive_ones(n - 2)",O(2^n)
+"def coin_change_naive_ways(coins, m, n):
+    if n == 0: return 1
+    if n < 0: return 0
+    if m <= 0: return 0
+    return coin_change_naive_ways(coins, m - 1, n) + coin_change_naive_ways(coins, m, n - coins[m - 1])",O(2^n)
+"def grid_unique_paths_naive(m, n):
+    if m == 1 or n == 1: return 1
+    return grid_unique_paths_naive(m - 1, n) + grid_unique_paths_naive(m, n - 1)",O(2^n)
+"def edit_distance_naive(s1, s2, i, j):
+    if i == 0: return j
+    if j == 0: return i
+    if s1[i-1] == s2[j-1]: return edit_distance_naive(s1, s2, i-1, j-1)
+    return 1 + min(edit_distance_naive(s1, s2, i, j-1), edit_distance_naive(s1, s2, i-1, j), edit_distance_naive(s1, s2, i-1, j-1))",O(2^n)
+"def subset_partition_equal_sum(arr, n, current_sum, total_sum):
+    if current_sum * 2 == total_sum: return True
+    if n == 0: return False
+    return (subset_partition_equal_sum(arr, n - 1, current_sum + arr[n - 1], total_sum) or
+            subset_partition_equal_sum(arr, n - 1, current_sum, total_sum))",O(2^n)
+"def decode_ways_naive(s, index):
+    if index == len(s): return 1
+    if s[index] == '0': return 0
+    res = decode_ways_naive(s, index + 1)
+    if index + 1 < len(s) and (s[index] == '1' or (s[index] == '2' and s[index + 1] <= '6')):
+        res += decode_ways_naive(s, index + 2)
+    return res",O(2^n)
+"def knapsack_01_with_profit(wt, val, w, n):
+    if n == 0 or w == 0: return 0
+    if wt[n - 1] > w: return knapsack_01_with_profit(wt, val, w, n - 1)
+    return max(val[n - 1] + knapsack_01_with_profit(wt, val, w - wt[n - 1], n - 1),
+               knapsack_01_with_profit(wt, val, w, n - 1))",O(2^n)
+"def count_binary_trees_naive(n):
+    if n <= 1: return 1
+    sum_val = 0
+    for i in range(1, n + 1):
+        sum_val += count_binary_trees_naive(i - 1) * count_binary_trees_naive(n - i)
+    return sum_val",O(2^n)
+"def combination_sum_naive(candidates, target, index):
+    if target == 0: return 1
+    if target < 0 or index >= len(candidates): return 0
+    return combination_sum_naive(candidates, target - candidates[index], index) + combination_sum_naive(candidates, target, index + 1)",O(2^n)
+"def count_subsets_with_given_difference(arr, n, diff, s1, total):
+    if n == 0:
+        s2 = total - s1
+        return 1 if s1 - s2 == diff else 0
+    return (count_subsets_with_given_difference(arr, n - 1, diff, s1 + arr[n - 1], total) +
+            count_subsets_with_given_difference(arr, n - 1, diff, s1, total))",O(2^n)
+"def optimal_bst_naive(keys, freq, i, j):
+    if j < i: return 0
+    if j == i: return freq[i]
+    fsum = sum(freq[i:j+1])
+    min_val = float('inf')
+    for r in range(i, j + 1):
+        cost = (optimal_bst_naive(keys, freq, i, r - 1) +
+                optimal_bst_naive(keys, freq, r + 1, j))
+        if cost < min_val: min_val = cost
+    return min_val + fsum",O(2^n)
+"def longest_common_subsequence_naive(X, Y, m, n):
+    if m == 0 or n == 0: return 0
+    if X[m - 1] == Y[n - 1]: return 1 + longest_common_subsequence_naive(X, Y, m - 1, n - 1)
+    return max(longest_common_subsequence_naive(X, Y, m, n - 1),
+               longest_common_subsequence_naive(X, Y, m - 1, n))",O(2^n)

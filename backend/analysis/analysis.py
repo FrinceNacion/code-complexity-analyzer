@@ -30,13 +30,15 @@ def print_table(parsed_output: dict) -> None:
         return
  
     # Column widths
-    name_w = max(len(f["name"]) for f in functions)
+    name_w = max(len(function["name"]) for function in functions)
     name_w = max(name_w, 8)
     line_w = len("Line No.")
     cc_w = len("Cyclomatic Complexity")
     depth_w = len("Nesting Depth")
     loops_w = len("Loops")
-    risk_w = max(len(f['features'].risk_level) for f in functions)
+    risk_w = max(len(function['features'].risk_level) for function in functions)
+    big_o_w = max(len(str(function.get("big_o"))) for function in functions)
+    big_o_w = max(big_o_w, len("Big-O"))
 
     header = (
         f"{'Function':<{name_w}}  "
@@ -44,7 +46,8 @@ def print_table(parsed_output: dict) -> None:
         f"{'Cyclomatic Complexity':>{cc_w}}  "
         f"{'Nesting Depth':>{depth_w}}  "
         f"{'Loops':>{loops_w}}  "
-        f"{'Risk':<{risk_w}}"
+        f"{'Risk':<{risk_w}}  "
+        f"{'Big-O':<{big_o_w}}"
     )
 
     separator = (
@@ -53,7 +56,8 @@ def print_table(parsed_output: dict) -> None:
         f"{'-' * cc_w}  "
         f"{'-' * depth_w}  "
         f"{'-' * loops_w}  "
-        f"{'-' * risk_w}"
+        f"{'-' * risk_w}  "
+        f"{'-' * big_o_w}"
     )
  
     print(header)
@@ -67,7 +71,8 @@ def print_table(parsed_output: dict) -> None:
             f"{function['features'].cyclomatic_complexity:>{cc_w}}  "
             f"{function['features'].max_nesting_depth:>{depth_w}}  "
             f"{function['features'].loop_count:>{loops_w}}  "
-            f"{function['features'].risk_level:<{risk_w}}"
+            f"{function['features'].risk_level:<{risk_w}}  "
+            f"{function.get('big_o', 'n/a'):<{big_o_w}}  "
         )
  
     print(separator)
@@ -102,6 +107,21 @@ def analyze(file_path: str, as_json: bool) -> int:
         print("Error: failed to parse file.", file=sys.stderr)
         return 1
     
+    functions = parsed_output.get("functions", [])
+    
+    if functions:
+        try:
+            from ml.predict import predict_big_o
+            for function in functions:
+                prediction = predict_big_o(function["features"])
+                function["big_o"] = prediction["label"]
+                function["big_o_confidence"] = prediction["confidence"]
+        except FileNotFoundError:
+            for function in functions:
+                function["big_o"] = None
+                function["big_o_confidence"] = None
+    
+    parsed_output['functions'] = functions
     parsed_output['file_path'] = file_path
     graph = build_graph(parsed_output)
 
