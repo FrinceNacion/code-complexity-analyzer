@@ -46,7 +46,8 @@ def print_table(parsed_output: dict) -> None:
         f"{'Cyclomatic Complexity':>{cc_w}}  "
         f"{'Nesting Depth':>{depth_w}}  "
         f"{'Loops':>{loops_w}}  "
-        f"{'Risk':<{risk_w}}"
+        f"{'Risk':<{risk_w}}  "
+        f"{'Big-O':<{big_o_w}}"
     )
 
     separator = (
@@ -55,7 +56,8 @@ def print_table(parsed_output: dict) -> None:
         f"{'-' * cc_w}  "
         f"{'-' * depth_w}  "
         f"{'-' * loops_w}  "
-        f"{'-' * risk_w}"
+        f"{'-' * risk_w}  "
+        f"{'-' * big_o_w}"
     )
  
     print(header)
@@ -69,7 +71,8 @@ def print_table(parsed_output: dict) -> None:
             f"{function['features'].cyclomatic_complexity:>{cc_w}}  "
             f"{function['features'].max_nesting_depth:>{depth_w}}  "
             f"{function['features'].loop_count:>{loops_w}}  "
-            f"{function['features'].risk_level:<{risk_w}}"
+            f"{function['features'].risk_level:<{risk_w}}  "
+            f"{function.get('big_o', 'n/a'):<{big_o_w}}  "
         )
  
     print(separator)
