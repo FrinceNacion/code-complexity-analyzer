@@ -7,12 +7,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
 
 from ml.features import FEATURE_NAMES, vector_from_code
+from ml.constants import csv_path, model_path
 
 def main():
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(current_dir, "data", "snippets.csv")
-    model_path = os.path.join(current_dir, "model.pkl")
-
     if not os.path.exists(csv_path):
         print(f"Error: dataset file not found at {csv_path}", file=sys.stderr)
         sys.exit(1)

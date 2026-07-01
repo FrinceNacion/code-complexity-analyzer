@@ -1,6 +1,7 @@
 import os
 from analysis.models import ExtractedFeatures
 from ml.features import FEATURE_NAMES, to_vector
+from ml.constants import model_path
 
 _model = None
 _serialized_feature_names = None
@@ -9,9 +10,6 @@ def _load_model():
     global _model, _serialized_feature_names
     if _model is not None:
         return
-
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(current_dir, "model.pkl")
 
     if not os.path.exists(model_path):
         raise FileNotFoundError("model.pkl not found — run `python -m ml.train` first")
