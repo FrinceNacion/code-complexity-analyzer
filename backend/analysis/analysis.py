@@ -104,6 +104,21 @@ def analyze(file_path: str, as_json: bool) -> int:
         print("Error: failed to parse file.", file=sys.stderr)
         return 1
     
+    functions = parsed_output.get("functions", [])
+    
+    if functions:
+        try:
+            from ml.predict import predict_big_o
+            for function in functions:
+                prediction = predict_big_o(function["features"])
+                function["big_o"] = prediction["label"]
+                function["big_o_confidence"] = prediction["confidence"]
+        except FileNotFoundError:
+            for function in functions:
+                function["big_o"] = None
+                function["big_o_confidence"] = None
+    
+    parsed_output['functions'] = functions
     parsed_output['file_path'] = file_path
     graph = build_graph(parsed_output)
 
