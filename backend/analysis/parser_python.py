@@ -12,9 +12,10 @@ def parse_python_file(file_path: str):
         print('path not file')
         return
     
-    file =  open(file=file_path, mode='r', encoding='utf-8')
+    with open(file=file_path, mode='r', encoding='utf-8') as file:
+        source = file.read()
 
-    tree = ast.parse(file.read())
+    tree = ast.parse(source)
     visitor = ComplexityVisitor()
     visitor.visit(tree)
 
