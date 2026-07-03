@@ -9,6 +9,12 @@ from routers import analyze
 
 logger = logging.getLogger(__name__)
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    logger.warning("python-dotenv not installed — environment variables will not be loaded from .env file")
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
