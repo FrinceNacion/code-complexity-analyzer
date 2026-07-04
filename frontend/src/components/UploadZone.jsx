@@ -1,0 +1,93 @@
+import React, { useRef, useState, useCallback } from "react";
+
+const ACCEPTED = [".py", ".js", ".ts", ".tsx"];
+
+function detectLanguage(filename) {
+    if (!filename) return "plaintext";
+    const ext = filename.split(".").pop().toLowerCase();
+    if (ext === "py") return "python";
+    if (ext === "js") return "javascript";
+    if (ext === "ts") return "typescript";
+    if (ext === "jsx") return "javascript";
+    if (ext === "tsx") return "typescript";
+    return "plaintext";
+}
+
+export default function UploadZone({ onFileSelect }) {
+    const inputRef = useRef(null);
+    const [dragOver, setDragOver] = useState(false);
+    const [fileInfo, setFileInfo] = useState(null);
+
+    const openPicker = () => inputRef.current?.click();
+
+    const clearFile = () => {
+        setFileInfo(null);
+        if (onFileSelect) onFileSelect(null);
+    };
+
+    const handleFiles = useCallback((files) => {
+        if (!files || files.length === 0) return;
+        const file = files[0];
+        const name = file.name || "untitled";
+        const size = file.size || 0;
+        const language = detectLanguage(name);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const content = e.target.result;
+            const info = { file, name, size, language, content };
+            setFileInfo(info);
+            onFileSelect && onFileSelect(info);
+        };
+        reader.readAsText(file);
+    }, [onFileSelect]);
+
+    const onInputChange = (e) => handleFiles(e.target.files);
+
+    const onDrop = (e) => {
+        e.preventDefault();
+        setDragOver(false);
+        handleFiles(e.dataTransfer.files);
+    };
+
+    return (
+        <div className="mb-3">
+            <div
+                className={`d-flex flex-column align-items-center justify-content-center p-4 rounded border border-dashed text-center bg-white" ${dragOver ? 'border-primary bg-light' : ''}`}
+                onClick={openPicker}
+                onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={onDrop}
+                style={{ minHeight: 140, cursor: "pointer", borderStyle: "dashed" }}
+                role="button"
+            >
+                <input ref={inputRef} type="file" className="d-none" onChange={onInputChange} accept={ACCEPTED.join(",")} />
+                <div className="mb-2">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3v10" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M8 7l4-4 4 4" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M21 15v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                </div>
+                <div>
+                    <h6 className="mb-1">Drag & Drop your source code here</h6>
+                    <p className="mb-0 text-muted">Or click to browse — accepts .py, .js, .ts, .jsx, .tsx</p>
+                </div>
+            </div>
+
+            {fileInfo ? (
+                <div className="card mt-3 p-3">
+                    <div className="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div className="fw-bold">{fileInfo.name}</div>
+                            <div className="text-muted small">{(fileInfo.size / 1024).toFixed(2)} KB • {fileInfo.language}</div>
+                        </div>
+                        <div>
+                            <button className="btn btn-sm btn-outline-secondary me-2" onClick={() => navigator.clipboard?.writeText(fileInfo.name)}>Copy Name</button>
+                            <button className="btn btn-sm btn-danger" onClick={clearFile}>Clear File</button>
+                        </div>
+                    </div>
+                </div>
+            ) : null}
+        </div>
+    );
+}
