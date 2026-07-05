@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap');
+
+.cascadia-code-font {
+  font-family: "Cascadia Code", sans-serif !important;
+  font-optical-sizing: auto;
+  font-weight: 400 !important;
+  font-style: normal;
+}
+
+.cascadia-code-font:hover {
+  background-color: #264f78;
+  border-radius: 4px;
+  width: fit-content;
+}
