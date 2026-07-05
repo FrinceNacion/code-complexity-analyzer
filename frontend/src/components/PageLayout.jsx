@@ -3,7 +3,14 @@ import UploadZone from "./UploadZone";
 import CodeEditor from "./CodeEditor";
 import ResultsPanel from "./ResultsPanel";
 
-const SAMPLE_PY = `#copy paste your code here \n def greet(name):\n    print(f"Hello, {name}!")\n\nfor i in range(3):\n    greet('world')\n`;
+const SAMPLE_PY = `
+#copy paste your code here
+def greet(name):
+    print(f"Hello, {name}!")
+
+for i in range(3):
+    greet('world')
+`;
 
 export default function PageLayout() {
     const [fileInfo, setFileInfo] = useState(null);
