@@ -1,4 +1,5 @@
 import React, { useRef, useState, useCallback } from "react";
+import { Upload } from 'lucide-react';
 
 const ACCEPTED = [".py", ".js", ".ts", ".tsx"];
 const MAX_FILE_SIZE = 5 * 1024; // 500 KB in bytes
@@ -41,7 +42,7 @@ export default function UploadZone({ onFileSelect }) {
 
         const language = detectLanguage(name);
         const reader = new FileReader();
-        
+
         reader.onload = (e) => {
             const content = e.target.result;
             const info = { file, name, size, language, content };
@@ -60,7 +61,7 @@ export default function UploadZone({ onFileSelect }) {
     };
 
     return (
-        <div className="mb-3">
+        <div>
             <div
                 className={`d-flex flex-column align-items-center justify-content-center p-4 rounded border-1 border-dashed text-center bg-white" ${dragOver ? 'border-primary bg-light' : ''}`}
                 onClick={openPicker}
@@ -81,7 +82,7 @@ export default function UploadZone({ onFileSelect }) {
             </div>
 
             {fileInfo ? (
-                <div className="card mt-3 p-3">
+                <div className="card m-0 mt-3 p-3">
                     <div className="d-flex justify-content-between align-items-start">
                         <div>
                             <div className="fw-bold">{fileInfo.name}</div>
