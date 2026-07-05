@@ -19,6 +19,8 @@ export default function UploadZone({ onFileSelect }) {
     const inputRef = useRef(null);
     const [dragOver, setDragOver] = useState(false);
     const [fileInfo, setFileInfo] = useState(null);
+    const [exceedSizeError, setExceedSizeError] = useState(false);
+    const [zeroSizeError, setZeroSizeError] = useState(false);
 
     const openPicker = () => inputRef.current?.click();
 
@@ -33,8 +35,15 @@ export default function UploadZone({ onFileSelect }) {
         const file = files[0];
         const size = file.size || 0;
 
+        if (size === 0) {
+            setZeroSizeError(true);
+            setTimeout(() => setZeroSizeError(false), 3000); // Hide error after 3 seconds
+            return;
+        }
+
         if (size > MAX_FILE_SIZE) {
-            console.warn("File size exceeds 500 KB limit.");
+            setExceedSizeError(true);
+            setTimeout(() => setExceedSizeError(false), 3000); // Hide error after 3 seconds
             return;
         }
 
@@ -62,8 +71,17 @@ export default function UploadZone({ onFileSelect }) {
 
     return (
         <div>
+            <div class={`alert alert-danger ${exceedSizeError ? 'd-block' : 'd-none'}`} role="alert">
+                File size exceeds 500 KB limit. Please upload a smaller file.
+            </div>
+            <div class={`alert alert-danger ${zeroSizeError ? 'd-block' : 'd-none'}`} role="alert">
+                File size is zero. Please upload a valid file.
+            </div>
             <div
-                className={`d-flex flex-column align-items-center justify-content-center p-4 rounded border-1 border-dashed text-center bg-white" ${dragOver ? 'border-primary bg-light' : ''}`}
+                className={`d-flex flex-column align-items-center justify-content-center p-4 rounded 
+                    ${zeroSizeError || exceedSizeError ? 'border-danger' : ''} 
+                    border-1 border-dashed text-center bg-white" 
+                    ${dragOver ? 'border-primary bg-light' : ''}`}
                 onClick={openPicker}
                 onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                 onDragLeave={() => setDragOver(false)}
