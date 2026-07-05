@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback } from "react";
 
 const ACCEPTED = [".py", ".js", ".ts", ".tsx"];
+const MAX_FILE_SIZE = 5 * 1024; // 500 KB in bytes
 
 function detectLanguage(filename) {
     if (!filename) return "plaintext";
@@ -27,11 +28,20 @@ export default function UploadZone({ onFileSelect }) {
 
     const handleFiles = useCallback((files) => {
         if (!files || files.length === 0) return;
+
         const file = files[0];
-        const name = file.name || "untitled";
         const size = file.size || 0;
+
+        if (size > MAX_FILE_SIZE) {
+            console.warn("File size exceeds 500 KB limit.");
+            return;
+        }
+
+        const name = file.name || "untitled";
+
         const language = detectLanguage(name);
         const reader = new FileReader();
+        
         reader.onload = (e) => {
             const content = e.target.result;
             const info = { file, name, size, language, content };
@@ -52,7 +62,7 @@ export default function UploadZone({ onFileSelect }) {
     return (
         <div className="mb-3">
             <div
-                className={`d-flex flex-column align-items-center justify-content-center p-4 rounded border border-dashed text-center bg-white" ${dragOver ? 'border-primary bg-light' : ''}`}
+                className={`d-flex flex-column align-items-center justify-content-center p-4 rounded border-1 border-dashed text-center bg-white" ${dragOver ? 'border-primary bg-light' : ''}`}
                 onClick={openPicker}
                 onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                 onDragLeave={() => setDragOver(false)}
@@ -70,7 +80,7 @@ export default function UploadZone({ onFileSelect }) {
                 </div>
                 <div>
                     <h6 className="mb-1">Drag & Drop your source code here</h6>
-                    <p className="mb-0 text-muted">Or click to browse — accepts .py, .js, .ts, .jsx, .tsx</p>
+                    <p className="mb-0 text-muted">Or click to browse — accepts .py, .js, .ts, .tsx</p>
                 </div>
             </div>
 
