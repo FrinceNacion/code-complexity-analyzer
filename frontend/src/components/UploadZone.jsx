@@ -72,11 +72,7 @@ export default function UploadZone({ onFileSelect }) {
             >
                 <input ref={inputRef} type="file" className="d-none" onChange={onInputChange} accept={ACCEPTED.join(",")} />
                 <div className="mb-2">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 3v10" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M8 7l4-4 4 4" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M21 15v2a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <Upload size={32}/>
                 </div>
                 <div>
                     <h6 className="mb-1">Drag & Drop your source code here</h6>
