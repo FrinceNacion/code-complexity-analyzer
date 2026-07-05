@@ -71,10 +71,10 @@ export default function UploadZone({ onFileSelect }) {
 
     return (
         <div>
-            <div class={`alert alert-danger ${exceedSizeError ? 'd-block' : 'd-none'}`} role="alert">
+            <div className={`alert alert-danger ${exceedSizeError ? 'd-block' : 'd-none'}`} role="alert">
                 File size exceeds 500 KB limit. Please upload a smaller file.
             </div>
-            <div class={`alert alert-danger ${zeroSizeError ? 'd-block' : 'd-none'}`} role="alert">
+            <div className={`alert alert-danger ${zeroSizeError ? 'd-block' : 'd-none'}`} role="alert">
                 File size is zero. Please upload a valid file.
             </div>
             <div
