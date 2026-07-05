@@ -73,11 +73,11 @@ export default function UploadZone({ onFileSelect }) {
             >
                 <input ref={inputRef} type="file" className="d-none" onChange={onInputChange} accept={ACCEPTED.join(",")} />
                 <div className="mb-2">
-                    <Upload size={32}/>
+                    <Upload size={32} />
                 </div>
                 <div>
                     <h6 className="mb-1">Drag & Drop your source code here</h6>
-                    <p className="mb-0 text-muted">Or click to browse — accepts .py, .js, .ts, .tsx</p>
+                    <p className="mb-0 text-body-secondary text-muted">Or click to browse — accepts .py, .js, .ts, .tsx (max: 500 KB)</p>
                 </div>
             </div>
 
