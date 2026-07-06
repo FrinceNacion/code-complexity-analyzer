@@ -3,6 +3,7 @@ import UploadZone from "./UploadZone";
 import CodeEditor from "./CodeEditor";
 import ResultsPanel from "./ResultsPanel";
 import "./font-style.css";
+import { useAnalysis } from "../hooks/useAnalysis";
 
 const SAMPLE_PY = `#copy paste your code here
 def greet(name):
@@ -13,16 +14,22 @@ for i in range(3):
 `;
 
 export default function PageLayout() {
+    const { result, error, analyze } = useAnalysis();
     const [fileInfo, setFileInfo] = useState(null);
     const [analysis, setAnalysis] = useState(null);
 
+    const onAnalyzeClick = async () => {
+        analyze(fileInfo);
+        if (result) {
+            setAnalysis({ fileName: fileInfo.name, response: result });
+        } else if (error) {
+            setAnalysis({ fileName: fileInfo.name, error: { error } });
+        }
+    }
+
     const onFileSelect = (info) => {
         setFileInfo(info);
-        if (info) {
-            setAnalysis({ fileName: info.name, summary: {} });
-        } else {
-            setAnalysis(null);
-        }
+        setAnalysis(null); // Reset analysis when a new file is selected
     };
 
     return (
@@ -39,7 +46,8 @@ export default function PageLayout() {
                                 readOnly={false}
                             />
                         </div>
-                        <div className="btn btn-sm ms-auto col-12 col-sm-3 d-flex justify-content-center" style={{ backgroundColor: "#1e1e1e", color: "#d4d4d4" }}>
+                        <div className="btn btn-sm ms-auto col-12 col-sm-3 d-flex justify-content-center" style={{          backgroundColor: "#1e1e1e", color: "#d4d4d4" }}
+                        onClick={onAnalyzeClick}>
                             <p className="mb-0 cascadia-code-font">Analyze<span style={{color: "#fad300"}}>()</span></p>
                         </div>
                     </div>
