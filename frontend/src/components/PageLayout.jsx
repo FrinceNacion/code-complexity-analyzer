@@ -14,22 +14,30 @@ for i in range(3):
 `;
 
 export default function PageLayout() {
-    const { result, error, analyze } = useAnalysis();
+    const { analyze } = useAnalysis();
     const [fileInfo, setFileInfo] = useState(null);
     const [analysis, setAnalysis] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onAnalyzeClick = async () => {
-        analyze(fileInfo);
-        if (result) {
+        if (!fileInfo?.file) return;
+
+        setIsLoading(true);
+        setAnalysis(null);
+
+        try {
+            const result = await analyze(fileInfo);
             setAnalysis({ fileName: fileInfo.name, response: result });
-        } else if (error) {
-            setAnalysis({ fileName: fileInfo.name, error: { error } });
+        } catch (error) {
+            setAnalysis({ fileName: fileInfo.name, error: { error: error.message } });
+        } finally {
+            setIsLoading(false);
         }
-    }
+    };
 
     const onFileSelect = (info) => {
         setFileInfo(info);
-        setAnalysis(null); // Reset analysis when a new file is selected
+        setAnalysis(null);
     };
 
     return (
