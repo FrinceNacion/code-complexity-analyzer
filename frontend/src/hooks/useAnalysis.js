@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000"
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
-export  function useAnalysis() {
+export function useAnalysis() {
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
 
@@ -10,7 +10,7 @@ export  function useAnalysis() {
         const form = new FormData();
         form.append("file", fileInfo.file);
 
-        try{
+        try {
             const response = await fetch(`${API_URL}/api/analyze`, {
                 method: "POST",
                 contentType: "multipart/form-data",
@@ -18,15 +18,19 @@ export  function useAnalysis() {
             });
 
             if (!response.ok) {
-                const error_date = await response.json();
+                const error_data = await response.json();
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
             setResult(data);
+            setError(null);
+            return data;
         } catch (error) {
+            setResult(null);
             setError(error.message);
         }
     }
+
     return { result, error, analyze };
 }
