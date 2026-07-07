@@ -54,15 +54,20 @@ export default function PageLayout() {
                                 readOnly={false}
                             />
                         </div>
-                        <div className="btn btn-sm ms-auto col-12 col-sm-3 d-flex justify-content-center" style={{          backgroundColor: "#1e1e1e", color: "#d4d4d4" }}
-                        onClick={onAnalyzeClick}>
-                            <p className="mb-0 cascadia-code-font">Analyze<span style={{color: "#fad300"}}>()</span></p>
+                        <div
+                            className="btn btn-sm ms-auto col-12 col-sm-3 d-flex justify-content-center"
+                            style={{ backgroundColor: "#1e1e1e", color: "#d4d4d4" }}
+                            onClick={onAnalyzeClick}
+                        >
+                            <p className="mb-0 cascadia-code-font">
+                                Analyze<span style={{ color: "#fad300" }}>()</span>
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-12 col-xl-7 d-flex">
-                    <ResultsPanel analysis={analysis} />
+                    <ResultsPanel analysis={analysis} isLoading={isLoading} />
                 </div>
             </div>
         </div>
