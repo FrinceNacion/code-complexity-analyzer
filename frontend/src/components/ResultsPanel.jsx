@@ -1,24 +1,39 @@
 import React from "react";
+import AnalysisResult from "./AnalysisResult";
 
-export default function ResultsPanel({ analysis = null }) {
+export default function ResultsPanel({ analysis = null, isLoading = false }) {
+    const response = analysis?.response ?? analysis ?? null;
+    const error = analysis?.error?.error ?? null;
+
     return (
-        <div className="card h-100 w-100 p-3">
+        <div className="card h-100 w-100 p-3 d-flex flex-column">
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h5 className="mb-0">Analysis Results</h5>
-                <small className="text-muted">Status: {analysis ? "Ready" : "Idle"}</small>
+                <small className="text-muted">
+                    Status: {isLoading ? "Analyzing..." : analysis ? "Ready" : "Idle"}
+                </small>
             </div>
 
-            <div style={{ overflow: "auto" }} className="flex-grow-1">
-                {analysis ? (
-                    <div>
-                        <div className="mb-3">
-                            <strong>File:</strong> {analysis.fileName}
-                        </div>
-                        <div className="mb-3">
-                            <strong>Summary:</strong>
-                            <div className="small text-muted">Cyclomatic complexity, Halstead metrics, etc.</div>
+            <div className="flex-grow-1 overflow-hidden">
+                {isLoading ? (
+                    <div className="text-muted">
+                        <p className="mb-2">Analyzing your file...</p>
+                        <div className="mt-3 p-3 bg-light rounded">
+                            <div className="placeholder-glow">
+                                <div className="placeholder col-7"></div>
+                                <div className="placeholder col-4"></div>
+                                <div className="placeholder col-4"></div>
+                                <div className="placeholder col-6"></div>
+                            </div>
                         </div>
                     </div>
+                ) : error ? (
+                    <div className="alert alert-danger mb-3" role="alert">
+                        <strong>Analysis failed.</strong>
+                        <div className="small">{error}</div>
+                    </div>
+                ) : response ? (
+                    <AnalysisResult response={response} />
                 ) : (
                     <div className="text-muted">
                         <p className="mb-2">No analysis performed yet.</p>
