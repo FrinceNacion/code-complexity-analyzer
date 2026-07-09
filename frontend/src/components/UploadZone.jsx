@@ -4,17 +4,6 @@ import { Upload } from 'lucide-react';
 const ACCEPTED = [".py", ".js", ".ts"];
 const MAX_FILE_SIZE = 5 * 1024; // 500 KB in bytes
 
-function detectLanguage(filename) {
-    if (!filename) return "plaintext";
-    const ext = filename.split(".").pop().toLowerCase();
-    if (ext === "py") return "python";
-    if (ext === "js") return "javascript";
-    if (ext === "ts") return "typescript";
-    if (ext === "jsx") return "javascript";
-    if (ext === "tsx") return "typescript";
-    return "plaintext";
-}
-
 export default function UploadZone({ fileInfo, setFileInfo, onClearFile, onFileSelect }) {
     const inputRef = useRef(null);
     const [dragOver, setDragOver] = useState(false);
