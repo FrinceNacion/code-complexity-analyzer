@@ -4,6 +4,7 @@ import CodeEditor from "./CodeEditor";
 import ResultsPanel from "./ResultsPanel";
 import "./font-style.css";
 import { useAnalysis } from "../hooks/useAnalysis";
+import { detectLanguage } from "./utils/language_detector";
 
 const SAMPLE_PY = `#copy paste your code here
 def greet(name):
@@ -19,17 +20,26 @@ export default function PageLayout() {
     const [analysis, setAnalysis] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [codeContent, setCodeContent] = useState(SAMPLE_PY);
-    const [fileLanguage, setFileLanguage] = useState("python");
+    const [modelLanguage, setModelLanguage] = useState("python");
 
     useEffect(() => {
         if (fileInfo?.content) {
             setCodeContent(fileInfo.content);
-            setFileLanguage(fileInfo.language);
+            setModelLanguage(fileInfo.language);
         }
     }, [fileInfo]);
 
     const onAnalyzeClick = async () => {
-        if (!fileInfo?.file) return;
+        if (!codeContent || codeContent.trim() === "") return;
+
+        if (!fileInfo?.file) {
+            const blob = new Blob([codeContent], { type: "text/plain" });
+            const file_name = "untitled.py"; // Default name for the file
+            // Detect language based on the default name (can't detect from content so no js/ts detection for now)
+            const file_language = detectLanguage(file_name); 
+            const file = new File([blob], file_name, { type: "text/plain" });
+            setFileInfo({ file, name: file_name, content: codeContent, language: file_language });
+        }
 
         setIsLoading(true);
         setAnalysis(null);
@@ -52,7 +62,7 @@ export default function PageLayout() {
     const onClearFile = () => {
         setFileInfo(null);
         setCodeContent(SAMPLE_PY);
-        setFileLanguage("python");
+        setModelLanguage("python");
         if (onFileSelect) onFileSelect(null);
     };
 
@@ -70,7 +80,7 @@ export default function PageLayout() {
                         <div className="flex-grow-1 mt-3 mb-3" style={{ minHeight: 260 }}>
                             <CodeEditor
                                 content={codeContent}
-                                language={fileLanguage}
+                                language={modelLanguage}
                                 readOnly={false}
                             />
                         </div>
