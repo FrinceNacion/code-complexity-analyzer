@@ -49,13 +49,24 @@ export default function PageLayout() {
         setAnalysis(null);
     };
 
+    const onClearFile = () => {
+        setFileInfo(null);
+        setCodeContent(SAMPLE_PY);
+        setFileLanguage("python");
+        if (onFileSelect) onFileSelect(null);
+    };
+
     return (
         <div className="container-fluid p-4 pt-5" style={{ minHeight: "100vh" }}>
             <div className="row gx-3 gy-3 h-100" style={{ minHeight: "100%" }}>
                 <div className="col-12 col-xl-5 d-flex h-100">
                     <div className="card p-3 d-flex flex-column w-100 mb-0">
                         <h5 className="mb-3 fw-bold">Source Input</h5>
-                        <UploadZone onFileSelect={onFileSelect} />
+                        <UploadZone
+                            fileInfo={fileInfo}
+                            setFileInfo={setFileInfo}
+                            onClearFile={onClearFile}
+                            onFileSelect={onFileSelect} />
                         <div className="flex-grow-1 mt-3 mb-3" style={{ minHeight: 260 }}>
                             <CodeEditor
                                 content={codeContent}
