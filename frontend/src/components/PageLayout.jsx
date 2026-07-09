@@ -17,6 +17,7 @@ for i in range(3):
 export default function PageLayout() {
     const { analyze } = useAnalysis();
     const [fileInfo, setFileInfo] = useState(null);
+    const targetInfo = useRef(null);
     const [analysis, setAnalysis] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [codeContent, setCodeContent] = useState(SAMPLE_PY);
@@ -33,22 +34,26 @@ export default function PageLayout() {
         if (!codeContent || codeContent.trim() === "") return;
 
         if (!fileInfo?.file) {
-            const blob = new Blob([codeContent], { type: "text/plain" });
+            const content = codeContent;
             const file_name = "untitled.py"; // Default name for the file
             // Detect language based on the default name (can't detect from content so no js/ts detection for now)
             const file_language = detectLanguage(file_name); 
-            const file = new File([blob], file_name, { type: "text/plain" });
-            setFileInfo({ file, name: file_name, content: codeContent, language: file_language });
+            const file = new File([content], file_name, { type: "text/x-python-script", lastModified: Date.now() });
+            const info = { file: file, name: file_name, size: content.length, language: file_language, content: content };
+            targetInfo.current = info; // Store the info in the ref for later use
+        }
+        else {
+            targetInfo.current = fileInfo;
         }
 
         setIsLoading(true);
         setAnalysis(null);
 
         try {
-            const result = await analyze(fileInfo);
-            setAnalysis({ fileName: fileInfo.name, response: result });
+            const result = await analyze(targetInfo.current);
+            setAnalysis({ fileName: targetInfo.current.name, response: result });
         } catch (error) {
-            setAnalysis({ fileName: fileInfo.name, error: { error: error.message } });
+            setAnalysis({ fileName: targetInfo.current.name, error: { error: error.message } });
         } finally {
             setIsLoading(false);
         }
