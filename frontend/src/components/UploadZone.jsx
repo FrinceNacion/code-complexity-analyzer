@@ -15,19 +15,13 @@ function detectLanguage(filename) {
     return "plaintext";
 }
 
-export default function UploadZone({ onFileSelect }) {
+export default function UploadZone({ fileInfo, setFileInfo, onClearFile, onFileSelect }) {
     const inputRef = useRef(null);
     const [dragOver, setDragOver] = useState(false);
-    const [fileInfo, setFileInfo] = useState(null);
     const [exceedSizeError, setExceedSizeError] = useState(false);
     const [zeroSizeError, setZeroSizeError] = useState(false);
 
     const openPicker = () => inputRef.current?.click();
-
-    const clearFile = () => {
-        setFileInfo(null);
-        if (onFileSelect) onFileSelect(null);
-    };
 
     const handleFiles = useCallback((files) => {
         if (!files || files.length === 0) return;
@@ -108,7 +102,7 @@ export default function UploadZone({ onFileSelect }) {
                         </div>
                         <div>
                             <button className="btn btn-sm btn-outline-secondary me-2" onClick={() => navigator.clipboard?.writeText(fileInfo.name)}>Copy Name</button>
-                            <button className="btn btn-sm btn-danger" onClick={clearFile}>Clear File</button>
+                            <button className="btn btn-sm btn-danger" onClick={onClearFile}>Clear File</button>
                         </div>
                     </div>
                 </div>
