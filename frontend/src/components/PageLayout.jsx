@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import UploadZone from "./UploadZone";
 import CodeEditor from "./CodeEditor";
 import ResultsPanel from "./ResultsPanel";
@@ -18,6 +18,15 @@ export default function PageLayout() {
     const [fileInfo, setFileInfo] = useState(null);
     const [analysis, setAnalysis] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [codeContent, setCodeContent] = useState(SAMPLE_PY);
+    const [fileLanguage, setFileLanguage] = useState("python");
+
+    useEffect(() => {
+        if (fileInfo?.content) {
+            setCodeContent(fileInfo.content);
+            setFileLanguage(fileInfo.language);
+        }
+    }, [fileInfo]);
 
     const onAnalyzeClick = async () => {
         if (!fileInfo?.file) return;
@@ -49,8 +58,8 @@ export default function PageLayout() {
                         <UploadZone onFileSelect={onFileSelect} />
                         <div className="flex-grow-1 mt-3 mb-3" style={{ minHeight: 260 }}>
                             <CodeEditor
-                                content={fileInfo?.content ?? SAMPLE_PY}
-                                language={fileInfo?.language}
+                                content={codeContent}
+                                language={fileLanguage}
                                 readOnly={false}
                             />
                         </div>
