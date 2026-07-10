@@ -15,6 +15,6 @@ def build_graph(features: dict[str,object]):
     for edge in features.get('features').call_edges:
         if edge['callee'] in TRACKED_BUILTINS:
             continue
-        edges.append(GraphEdge(source=edge['caller'], target=edge['callee']))
+        edges.append(GraphEdge(source=edge['caller'] or '<module>', target=edge['callee']))
 
     return CallGraph(nodes=nodes, edges=edges)
