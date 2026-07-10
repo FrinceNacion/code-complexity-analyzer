@@ -27,6 +27,7 @@ export function useAnalysis() {
             setError(null);
             return data;
         } catch (error) {
+            throw new Error(`Failed to analyze file: ${error.message}`);
             setResult(null);
             setError(error.message);
         }
