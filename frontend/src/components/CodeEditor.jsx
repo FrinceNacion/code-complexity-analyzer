@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor";
 
-export default function CodeEditor({ content, language = "python", readOnly = false }) {
+export default function CodeEditor({ modelRef, content, language = "python", readOnly = false }) {
     const containerRef = useRef(null);
     const editorRef = useRef(null);
-    const modelRef = useRef(null);
 
     useEffect(() => {
         if (!containerRef.current) return;

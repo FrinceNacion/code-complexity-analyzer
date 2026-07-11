@@ -20,8 +20,10 @@ export default function PageLayout() {
     const targetInfo = useRef(null);
     const [analysis, setAnalysis] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const modelRef = useRef(null);
     const [codeContent, setCodeContent] = useState(SAMPLE_PY);
     const [modelLanguage, setModelLanguage] = useState("python");
+
 
     useEffect(() => {
         if (fileInfo?.content) {
@@ -32,18 +34,18 @@ export default function PageLayout() {
 
     const onAnalyzeClick = async () => {
         if (!codeContent || codeContent.trim() === "") return;
+        const content = modelRef.current?.getValue();
+
+        fileInfo.file = content;
+        targetInfo.current = fileInfo;
 
         if (!fileInfo?.file) {
-            const content = codeContent;
             const file_name = "untitled.py"; // Default name for the file
             // Detect language based on the default name (can't detect from content so no js/ts detection for now)
-            const file_language = detectLanguage(file_name); 
+            const file_language = detectLanguage(file_name);
             const file = new File([content], file_name, { type: "text/x-python-script", lastModified: Date.now() });
             const info = { file: file, name: file_name, size: content.length, language: file_language, content: content };
             targetInfo.current = info; // Store the info in the ref for later use
-        }
-        else {
-            targetInfo.current = fileInfo;
         }
 
         setIsLoading(true);
@@ -84,6 +86,7 @@ export default function PageLayout() {
                             onFileSelect={onFileSelect} />
                         <div className="flex-grow-1 mt-3 mb-3" style={{ minHeight: 260 }}>
                             <CodeEditor
+                                modelRef={modelRef}
                                 content={codeContent}
                                 language={modelLanguage}
                                 readOnly={false}
