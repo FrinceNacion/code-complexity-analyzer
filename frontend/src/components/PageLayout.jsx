@@ -34,10 +34,7 @@ export default function PageLayout() {
 
     const onAnalyzeClick = async () => {
         if (!codeContent || codeContent.trim() === "") return;
-        const content = modelRef.current?.getValue();
-
-        fileInfo.file = content;
-        targetInfo.current = fileInfo;
+        const content = modelRef.current?.getValue(); 
 
         if (!fileInfo?.file) {
             const file_name = "untitled.py"; // Default name for the file
@@ -46,6 +43,8 @@ export default function PageLayout() {
             const file = new File([content], file_name, { type: "text/x-python-script", lastModified: Date.now() });
             const info = { file: file, name: file_name, size: content.length, language: file_language, content: content };
             targetInfo.current = info; // Store the info in the ref for later use
+        } else {
+            targetInfo.current = fileInfo;
         }
 
         setIsLoading(true);
