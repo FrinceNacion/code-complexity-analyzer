@@ -1,7 +1,11 @@
-import React from "react";
 import AnalysisResult from "./AnalysisResult";
 
-export default function ResultsPanel({ analysis = null, isLoading = false }) {
+export default function ResultsPanel({ 
+    analysis = null, 
+    isLoading = false,
+    selectedFunction = null,
+    onSelectFunction
+}) {
     const response = analysis?.response ?? analysis ?? null;
     const error = analysis?.error?.error ?? null;
 
