@@ -1,7 +1,9 @@
 import React from "react";
 import { formatValue, getRiskBadgeClass } from "./utils/formatters";
 
-export default function AnalysisResult({ response }) {
+export default function AnalysisResult({ response, selectedFunction, onSelectFunction }) {
+    const [activeTab, setActiveTab] = useState("overview");
+
     const fileName = response?.file_name ?? "Unknown";
     const summary = response?.summary ?? null;
     const fileFeatures = response?.file_features ?? null;
