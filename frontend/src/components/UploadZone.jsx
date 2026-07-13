@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 import { Upload } from 'lucide-react';
 import { detectLanguage } from "./utils/language_detector";
 
@@ -43,7 +43,7 @@ export default function UploadZone({ fileInfo, setFileInfo, onClearFile, onFileS
             onFileSelect && onFileSelect(info);
         };
         reader.readAsText(file);
-    }, [onFileSelect]);
+    }, [onFileSelect, setFileInfo]);
 
     const onInputChange = (e) => handleFiles(e.target.files);
 
