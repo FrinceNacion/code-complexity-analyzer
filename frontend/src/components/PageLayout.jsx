@@ -45,6 +45,10 @@ export default function PageLayout() {
             targetInfo.current = info; // Store the info in the ref for later use
         } else {
             targetInfo.current = fileInfo;
+            if (fileInfo.content !== content) {
+                const updatedFile = new File([content], fileInfo.name, { type: fileInfo.file.type, lastModified: Date.now() });
+                targetInfo.current = { ...fileInfo, file: updatedFile, content: content, size: content.length };
+            }
         }
 
         setIsLoading(true);
