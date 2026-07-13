@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import UploadZone from "./UploadZone";
 import CodeEditor from "./CodeEditor";
 import ResultsPanel from "./ResultsPanel";
@@ -23,6 +23,7 @@ export default function PageLayout() {
     const modelRef = useRef(null);
     const [codeContent, setCodeContent] = useState(SAMPLE_PY);
     const [modelLanguage, setModelLanguage] = useState("python");
+    const [selectedFunction, setSelectedFunction] = useState(null);
 
 
     useEffect(() => {
@@ -53,6 +54,7 @@ export default function PageLayout() {
 
         setIsLoading(true);
         setAnalysis(null);
+        setSelectedFunction(null);
 
         try {
             const result = await analyze(targetInfo.current);
@@ -67,12 +69,14 @@ export default function PageLayout() {
     const onFileSelect = (info) => {
         setFileInfo(info);
         setAnalysis(null);
+        setSelectedFunction(null);
     };
 
     const onClearFile = () => {
         setFileInfo(null);
         setCodeContent(SAMPLE_PY);
         setModelLanguage("python");
+        setSelectedFunction(null);
         if (onFileSelect) onFileSelect(null);
     };
 
