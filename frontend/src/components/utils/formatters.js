@@ -97,3 +97,28 @@ export const getMetricDescription = (metricName) => {
             return "N/A";
     }
 };
+
+export const getMetricInsight = (metricName, value) => {
+    if (value === null || value === undefined) return "";
+    switch (metricName) {
+        case "cyclomatic_complexity":
+            if (value <= 4) return "Simple execution structure, extremely easy to test and maintain.";
+            if (value <= 7) return "Moderate complexity. Easy to manage but contains a few branching paths.";
+            if (value <= 10) return "High complexity. Contains multiple decision paths; keep an eye on complexity growth.";
+            return "Critical complexity. Very high risk of bugs; highly recommended to refactor into smaller helper functions.";
+
+        case "maintainability_index":
+            if (value >= 80) return "Excellent maintainability. Clean, readable, and highly maintainable.";
+            if (value >= 65) return "Good maintainability. Code is reasonably readable, but could benefit from minor cleanup.";
+            if (value >= 50) return "Low maintainability. Somewhat hard to read or edit. Bugs are more likely to hide here.";
+            return "Critical maintainability. Very difficult to maintain. High risk of technical debt. Immediate refactor suggested.";
+
+        case "max_nesting_depth":
+            if (value <= 2) return "Low nesting level. Straightforward logic flow.";
+            if (value <= 4) return "Moderate nesting level. Some nested control flows are present.";
+            return "Deep nesting level. High cognitive load; consider using guard clauses or early exits to flatten the code.";
+
+        default:
+            return "";
+    }
+};
