@@ -122,3 +122,26 @@ export const getMetricInsight = (metricName, value) => {
             return "";
     }
 };
+
+export const computeFunctionMetrics = (fn) => {
+    const cyclomatic_complexity = fn.cyclomatic_complexity ?? 1;
+    const halstead_volume = fn.halstead_volume ?? 0;
+    const halstead_length = fn.halstead_length ?? 0;
+    const lines_of_code = Math.max(1, Math.round(halstead_length / 5));  // estimated LOC
+
+    // Maintainability Index formula: 171 - 5.2 * ln(Vol) - 0.23 * CC - 16.2 * ln(LOC)
+    const volume_log = halstead_volume > 0 ? Math.log(halstead_volume) : 0;
+    const lines_of_code_log = Math.log(lines_of_code);
+    
+    let raw_maintainability_index = 171 - 5.2 * volume_log - 0.23 * cyclomatic_complexity - 16.2 * lines_of_code_log;
+    let maintainability_index = Math.max(0, Math.min(100, (raw_maintainability_index * 100) / 171));
+
+    // Calculate Halstead Effort
+    const halstead_effort = (fn.halstead_volume ?? 0) * (fn.halstead_difficulty ?? 0);
+
+    return {
+        lines_of_code: lines_of_code,
+        maintainability_index: Math.round(maintainability_index),
+        halstead_effort: Math.round(halstead_effort),
+    };
+};
