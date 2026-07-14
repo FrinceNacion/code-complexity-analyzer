@@ -145,3 +145,70 @@ export const computeFunctionMetrics = (fn) => {
         halstead_effort: Math.round(halstead_effort),
     };
 };
+
+export const computeProjectMetrics = (response) => {
+    const summary = response?.summary ?? {};
+    const functions = Array.isArray(response?.functions) ? response.functions : [];
+    const file_line_of_code = Math.max(1, Math.round((response?.file_features?.halstead_length ?? 0) / 5));
+    
+    if (functions.length === 0) {
+        return {
+            total_functions: 0,
+            avg_complexity: 0,
+            max_complexity: 0,
+            avg_maintainability: 100,
+            avg_halstead_volume: 0,
+            max_nesting_depth: response?.file_features?.max_nesting_depth ?? 0,
+            total_loc: file_line_of_code,
+            rating: "A",
+            ratingColor: "#22c55e",
+        };
+    }
+
+    let total_maintainability_index = 0;
+    let total_volume = 0;
+    let max_nesting = 0;
+    
+    functions.forEach(fn => {
+        const computed = computeFunctionMetrics(fn);
+        total_maintainability_index += computed.maintainability_index;
+        total_volume += fn.halstead_volume ?? 0;
+        max_nesting = Math.max(max_nesting, fn.max_nesting_depth ?? 0);
+    });
+
+    const total_functions = functions.length;
+    const average_maintainability = Math.round(total_maintainability_index / total_functions);
+    const average_volume = total_volume / total_functions;
+
+    // Project rating based on Maintainability Index
+    let rating;
+    let ratingColor;
+    if (average_maintainability >= 85) {
+        rating = "A";
+        ratingColor = "#22c55e";
+    } else if (average_maintainability >= 70) {
+        rating = "B";
+        ratingColor = "#3b82f6";
+    } else if (average_maintainability >= 55) {
+        rating = "C";
+        ratingColor = "#eab308";
+    } else if (average_maintainability >= 40) {
+        rating = "D";
+        ratingColor = "#f97316";
+    } else {
+        rating = "F";
+        ratingColor = "#ef4444";
+    }
+
+    return {
+        total_functions: total_functions,
+        avg_complexity: summary.avg_complexity ?? 0,
+        max_complexity: summary.max_complexity ?? 0,
+        avg_maintainability: average_maintainability,
+        avg_halstead_volume: average_volume,
+        max_nesting_depth: Math.max(max_nesting, response?.file_features?.max_nesting_depth ?? 0),
+        total_loc: file_line_of_code,
+        rating,
+        ratingColor,
+    };
+};
