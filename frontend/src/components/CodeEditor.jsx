@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor";
 
 export default function CodeEditor({ modelRef, content, language = "python", readOnly = false }) {
@@ -36,7 +36,7 @@ export default function CodeEditor({ modelRef, content, language = "python", rea
         if (modelRef.current.getValue() !== content) {
             modelRef.current.setValue(content || "");
         }
-    }, [content]);
+    }, [content, modelRef]);
 
     useEffect(() => {
         if (!modelRef.current) return;
@@ -45,7 +45,7 @@ export default function CodeEditor({ modelRef, content, language = "python", rea
         } catch (e) {
             console.warn(`Failed to set language to ${language}:`, e);
         }
-    }, [language]);
+    }, [language, modelRef]);
 
     useEffect(() => {
         if (!editorRef.current) return;

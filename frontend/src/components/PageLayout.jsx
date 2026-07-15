@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import UploadZone from "./UploadZone";
 import CodeEditor from "./CodeEditor";
 import ResultsPanel from "./ResultsPanel";
@@ -23,6 +23,7 @@ export default function PageLayout() {
     const modelRef = useRef(null);
     const [codeContent, setCodeContent] = useState(SAMPLE_PY);
     const [modelLanguage, setModelLanguage] = useState("python");
+    const [selectedFunction, setSelectedFunction] = useState(null);
 
 
     useEffect(() => {
@@ -53,6 +54,7 @@ export default function PageLayout() {
 
         setIsLoading(true);
         setAnalysis(null);
+        setSelectedFunction(null);
 
         try {
             const result = await analyze(targetInfo.current);
@@ -67,17 +69,19 @@ export default function PageLayout() {
     const onFileSelect = (info) => {
         setFileInfo(info);
         setAnalysis(null);
+        setSelectedFunction(null);
     };
 
     const onClearFile = () => {
         setFileInfo(null);
         setCodeContent(SAMPLE_PY);
         setModelLanguage("python");
+        setSelectedFunction(null);
         if (onFileSelect) onFileSelect(null);
     };
 
     return (
-        <div className="container-fluid p-4 pt-5" style={{ minHeight: "100vh" }}>
+        <div className="container-fluid p-4 pt-4" style={{ minHeight: "100vh" }}>
             <div className="row gx-3 gy-3 h-100" style={{ minHeight: "100%" }}>
                 <div className="col-12 col-xl-5 d-flex h-100">
                     <div className="card p-3 d-flex flex-column w-100 mb-0">
@@ -108,7 +112,12 @@ export default function PageLayout() {
                 </div>
 
                 <div className="col-12 col-xl-7 d-flex">
-                    <ResultsPanel analysis={analysis} isLoading={isLoading} />
+                    <ResultsPanel 
+                        analysis={analysis} 
+                        isLoading={isLoading} 
+                        selectedFunction={selectedFunction}
+                        onSelectFunction={setSelectedFunction}
+                    />
                 </div>
             </div>
         </div>
