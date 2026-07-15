@@ -198,9 +198,8 @@ export default function CallGraph({ callGraph, functions, selectedFunction, onSe
             .on("mousemove", (event) => {
                 const tooltip = tooltipRef.current;
                 if (!tooltip) return;
-                // Position relative to screen
-                tooltip.style.left = `${event.pageX + 12}px`;
-                tooltip.style.top = `${event.pageY + 12}px`;
+                tooltip.style.left = `${12}px`;
+                tooltip.style.top = `${12}px`;
             })
             .on("mouseout", () => {
                 if (tooltipRef.current) {
@@ -213,7 +212,7 @@ export default function CallGraph({ callGraph, functions, selectedFunction, onSe
         node.append("circle")
             .attr("r", (node) => getRadius(node))
             .attr("fill", (node) => {
-                if (!node.isDefined) return "#e2e8f0"; 
+                if (!node.isDefined) return "#e2e8f0";
                 const severity = getSeverity("cyclomatic_complexity", node.complexity);
                 return severity.color;
             })
@@ -354,17 +353,17 @@ export default function CallGraph({ callGraph, functions, selectedFunction, onSe
 
     return (
         <div className="card border p-3 bg-white w-100 position-relative" style={{ overflow: "hidden" }}>
-            <div className="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+            <div className="d-flex gap-2 justify-content-between align-items-center mb-2 pb-2 border-bottom">
                 <div>
                     <h6 className="fw-bold mb-0 text-dark">Interactive Call Graph</h6>
                     <small className="text-muted">Scroll to zoom, drag nodes to layout. Click to select.</small>
                 </div>
-                <div className="d-flex gap-2 align-items-center">
-                    <span className="small text-muted d-flex align-items-center gap-1">
+                <div className="d-flex flex-wrap gap-2 align-items-center">
+                    <span className="small text-muted d-flex align-items-center gap-2">
                         <span className="d-inline-block rounded-circle" style={{ width: 8, height: 8, backgroundColor: "#3b82f6" }}></span>
                         Incoming (Callers)
                     </span>
-                    <span className="small text-muted d-flex align-items-center gap-1">
+                    <span className="small text-muted d-flex align-items-center gap-2">
                         <span className="d-inline-block rounded-circle" style={{ width: 8, height: 8, backgroundColor: "#f97316" }}></span>
                         Outgoing (Callees)
                     </span>
