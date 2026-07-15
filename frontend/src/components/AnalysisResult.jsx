@@ -1,5 +1,20 @@
-import React from "react";
-import { formatValue, getRiskBadgeClass } from "./utils/formatters";
+import { useState, useMemo } from "react";
+import { 
+    formatValue, 
+    getRiskBadgeClass, 
+    getMetricInsight, 
+    computeFunctionMetrics,
+    computeProjectMetrics
+} from "./utils/formatters";
+import FunctionTable from "./FunctionTable";
+import CallGraph from "./CallGraph";
+import MetricsPanel from "./MetricsPanel";
+import { 
+    AlertTriangle, 
+    Info, 
+    Lightbulb,
+    FileText
+} from "lucide-react";
 
 export default function AnalysisResult({ response, selectedFunction, onSelectFunction }) {
     const [activeTab, setActiveTab] = useState("overview");
