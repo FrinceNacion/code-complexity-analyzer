@@ -12,29 +12,29 @@ export default function CallGraph({ callGraph, functions, selectedFunction, onSe
         const edgesData = callGraph?.edges || [];
 
         const nodeMap = new Map();
-        nodesData.forEach((n) => {
-            nodeMap.set(n.label, {
-                id: n.label,
-                label: n.label,
-                complexity: n.complexity,
+        nodesData.forEach((node) => {
+            nodeMap.set(node.label, {
+                id: node.label,
+                label: node.label,
+                complexity: node.complexity,
                 isDefined: true,
             });
         });
 
         // Add any missing nodes referenced in edges
-        edgesData.forEach((e) => {
-            if (!nodeMap.has(e.source)) {
-                nodeMap.set(e.source, {
-                    id: e.source,
-                    label: e.source,
+        edgesData.forEach((edge) => {
+            if (!nodeMap.has(edge.source)) {
+                nodeMap.set(edge.source, {
+                    id: edge.source,
+                    label: edge.source,
                     complexity: 1,
                     isDefined: false,
                 });
             }
-            if (!nodeMap.has(e.target)) {
-                nodeMap.set(e.target, {
-                    id: e.target,
-                    label: e.target,
+            if (!nodeMap.has(edge.target)) {
+                nodeMap.set(edge.target, {
+                    id: edge.target,
+                    label: edge.target,
                     complexity: 1,
                     isDefined: false,
                 });
@@ -43,9 +43,9 @@ export default function CallGraph({ callGraph, functions, selectedFunction, onSe
 
         const nodes = Array.from(nodeMap.values());
 
-        const links = edgesData.map((e) => ({
-            source: e.source,
-            target: e.target,
+        const links = edgesData.map((edge) => ({
+            source: edge.source,
+            target: edge.target,
         }));
 
         return { nodes, links };
@@ -65,8 +65,8 @@ export default function CallGraph({ callGraph, functions, selectedFunction, onSe
 
     const nodeDegree = useMemo(() => {
         const degree = {};
-        d3Data.nodes.forEach((n) => {
-            degree[n.id] = { callers: new Set(), callees: new Set() };
+        d3Data.nodes.forEach((node) => {
+            degree[node.id] = { callers: new Set(), callees: new Set() };
         });
         d3Data.links.forEach((link) => {
             if (degree[link.target]) degree[link.target].callers.add(link.source);
