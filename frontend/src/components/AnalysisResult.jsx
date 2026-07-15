@@ -22,8 +22,96 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
     const fileName = response?.file_name ?? "Unknown";
     const summary = response?.summary ?? null;
     const fileFeatures = response?.file_features ?? null;
-    const functions = Array.isArray(response?.functions) ? response.functions : [];
-    const callGraph = response?.call_graph ?? { nodes: [], edges: [] };
+
+    const functions = useMemo(() => {
+        return Array.isArray(response?.functions) ? response.functions : [];
+    }, [response]);
+
+    const callGraph = useMemo(() => {
+        return response?.call_graph ?? { nodes: [], edges: [] };
+    }, [response]);
+
+    const projectMetrics = useMemo(() => computeProjectMetrics(response), [response]);
+
+    const recommendations = useMemo(() => {
+        const list = [];
+        if (!functions.length) return list;
+
+        const criticalFunctions = functions.filter(fn => fn.cyclomatic_complexity > 10);
+        const warningFunctions = functions.filter(fn => fn.cyclomatic_complexity > 4 && fn.cyclomatic_complexity <= 10);
+        
+        if (criticalFunctions.length > 0) {
+            criticalFunctions.forEach(fn => {
+                list.push({
+                    type: "danger",
+                    title: "Critical Complexity",
+                    message: `Function "${fn.name}" has critical cyclomatic complexity of ${fn.cyclomatic_complexity}. This represents a high risk of bugs and makes code difficult to test. Refactor this function by breaking it down into smaller sub-functions.`
+                });
+            });
+        }
+        if (warningFunctions.length > 0) {
+            list.push({
+                type: "warning",
+                title: "Moderate Complexity",
+                message: `Functions [${warningFunctions.map(f => `"${f.name}"`).join(", ")}] have moderate complexity (score 5-10). Keep them modular to prevent future maintenance bottlenecks.`
+            });
+        }
+
+        const deepNestingFunctions = functions.filter(fn => fn.max_nesting_depth > 4);
+        if (deepNestingFunctions.length > 0) {
+            deepNestingFunctions.forEach(fn => {
+                list.push({
+                    type: "warning",
+                    title: "Deep Nesting Depth",
+                    message: `Function "${fn.name}" reaches a nesting level of ${fn.max_nesting_depth}. Deep indentation indicates high cognitive complexity. Consider using guard clauses to return early and flatten structure.`
+                });
+            });
+        }
+
+        functions.forEach(fn => {
+            const computed = computeFunctionMetrics(fn);
+            if (computed.maintainability_index < 50) {
+                list.push({
+                    type: "danger",
+                    title: "Low Maintainability",
+                    message: `Function "${fn.name}" scored ${computed.maintainability_index}/100 on the maintainability index. This is due to high complexity relative to its volume. Immediate refactoring is recommended.`
+                });
+            }
+        });
+
+        const recursiveFunctions = functions.filter(fn => fn.is_recursive);
+        if (recursiveFunctions.length > 0) {
+            recursiveFunctions.forEach(fn => {
+                list.push({
+                    type: "info",
+                    title: "Recursive Function",
+                    message: `Function "${fn.name}" uses recursion. Ensure there is a robust terminating base case to avoid stack overflow risks during large inputs.`
+                });
+            });
+        }
+
+        if (list.length === 0) {
+            list.push({
+                type: "success",
+                title: "All Clear",
+                message: "Excellent! All functions fall within clean, low-complexity guidelines. Code maintainability is superb."
+            });
+        }
+
+        return list;
+    }, [functions]);
+
+    // Lookup selected function details
+    const selectedFunctionDetails = useMemo(() => {
+        if (!selectedFunction) return null;
+        return functions.find(fn => fn.name === selectedFunction.name) ?? null;
+    }, [selectedFunction, functions]);
+
+    // Computed metrics for selected function
+    const selectedFunctionMetrics = useMemo(() => {
+        if (!selectedFunctionDetails) return null;
+        return computeFunctionMetrics(selectedFunctionDetails);
+    }, [selectedFunctionDetails]);
 
     return (
         <div>
