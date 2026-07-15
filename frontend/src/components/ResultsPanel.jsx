@@ -37,7 +37,11 @@ export default function ResultsPanel({
                         <div className="small">{error}</div>
                     </div>
                 ) : response ? (
-                    <AnalysisResult response={response} />
+                    <AnalysisResult 
+                        response={response} 
+                        selectedFunction={selectedFunction}
+                        onSelectFunction={onSelectFunction}
+                    />
                 ) : (
                     <div className="text-muted">
                         <p className="mb-2">No analysis performed yet.</p>
