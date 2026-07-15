@@ -112,7 +112,12 @@ export default function PageLayout() {
                 </div>
 
                 <div className="col-12 col-xl-7 d-flex">
-                    <ResultsPanel analysis={analysis} isLoading={isLoading} />
+                    <ResultsPanel 
+                        analysis={analysis} 
+                        isLoading={isLoading} 
+                        selectedFunction={selectedFunction}
+                        onSelectFunction={setSelectedFunction}
+                    />
                 </div>
             </div>
         </div>
