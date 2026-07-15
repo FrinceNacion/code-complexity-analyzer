@@ -18,3 +18,54 @@
 @media (max-width: 991px) {
 	.monaco-container { min-height: 320px; }
 }
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.transition-all {
+	transition: all 0.2s ease-in-out;
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.border-good {
+	border-left-color: #22c55e !important;
+}
+.border-moderate {
+	border-left-color: #0ea5e9 !important;
+}
+.border-high {
+	border-left-color: #f59e0b !important;
+}
+.border-critical {
+	border-left-color: #ef4444 !important;
+}
+
+.card-hover:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Callgraph specific styles */
+.node-circle {
+	transition: stroke-width 0.2s, stroke 0.2s, r 0.2s, fill-opacity 0.2s;
+}
+
+.links line {
+	transition: stroke-width 0.2s, stroke 0.2s, opacity 0.2s;
+}
+
