@@ -10,7 +10,7 @@ export default function ResultsPanel({
     const error = analysis?.error?.error ?? null;
 
     return (
-        <div className="card h-100 w-100 p-3 d-flex flex-column">
+        <div className="card h-100 w-100 p-3 d-flex flex-column mb-0">
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h5 className="mb-0 fw-bold">Analysis Results</h5>
                 <small className="text-muted">
