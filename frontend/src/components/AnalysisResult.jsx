@@ -1,17 +1,17 @@
 import { useState, useMemo } from "react";
-import { 
-    formatValue, 
-    getRiskBadgeClass, 
-    getMetricInsight, 
+import {
+    formatValue,
+    getRiskBadgeClass,
+    getMetricInsight,
     computeFunctionMetrics,
     computeProjectMetrics
 } from "./utils/formatters";
 import FunctionTable from "./FunctionTable";
 import CallGraph from "./CallGraph";
 import MetricsPanel from "./MetricsPanel";
-import { 
-    AlertTriangle, 
-    Info, 
+import {
+    AlertTriangle,
+    Info,
     Lightbulb,
     FileText
 } from "lucide-react";
@@ -39,7 +39,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
 
         const criticalFunctions = functions.filter(fn => fn.cyclomatic_complexity > 10);
         const warningFunctions = functions.filter(fn => fn.cyclomatic_complexity > 4 && fn.cyclomatic_complexity <= 10);
-        
+
         if (criticalFunctions.length > 0) {
             criticalFunctions.forEach(fn => {
                 list.push({
@@ -125,13 +125,13 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
                         </span>
                     </div>
                 </div>
-                
+
                 <div className="d-flex align-items-center gap-2 bg-light border px-2 py-1 rounded">
                     <span className="small text-muted">Health:</span>
-                    <span 
-                        className="fw-bold px-2 rounded" 
-                        style={{ 
-                            backgroundColor: `${projectMetrics.ratingColor}20`, 
+                    <span
+                        className="fw-bold px-2 rounded"
+                        style={{
+                            backgroundColor: `${projectMetrics.ratingColor}20`,
                             color: projectMetrics.ratingColor,
                             fontSize: "0.85rem"
                         }}
@@ -143,32 +143,32 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
 
             <ul className="nav nav-tabs border-bottom-0 mb-3" role="tablist">
                 <li className="nav-item">
-                    <button 
-                        className={`nav-link py-2 px-3 ${activeTab === "overview" ? "active fw-bold text-dark border-bottom-2 border-primary" : "text-muted border-0"}`} 
+                    <button
+                        className={`nav-link py-2 px-3 ${activeTab === "overview" ? "active fw-bold text-dark border-bottom-2 border-primary" : "text-muted border-0"}`}
                         onClick={() => setActiveTab("overview")}
                     >
                         Overview
                     </button>
                 </li>
                 <li className="nav-item">
-                    <button 
-                        className={`nav-link py-2 px-3 ${activeTab === "functions" ? "active fw-bold text-dark border-bottom-2 border-primary" : "text-muted border-0"}`} 
+                    <button
+                        className={`nav-link py-2 px-3 ${activeTab === "functions" ? "active fw-bold text-dark border-bottom-2 border-primary" : "text-muted border-0"}`}
                         onClick={() => setActiveTab("functions")}
                     >
                         Functions ({functions.length})
                     </button>
                 </li>
                 <li className="nav-item">
-                    <button 
-                        className={`nav-link py-2 px-3 ${activeTab === "call_graph" ? "active fw-bold text-dark border-bottom-2 border-primary" : "text-muted border-0"}`} 
+                    <button
+                        className={`nav-link py-2 px-3 ${activeTab === "call_graph" ? "active fw-bold text-dark border-bottom-2 border-primary" : "text-muted border-0"}`}
                         onClick={() => setActiveTab("call_graph")}
                     >
                         Call Graph
                     </button>
                 </li>
                 <li className="nav-item">
-                    <button 
-                        className={`nav-link py-2 px-3 ${activeTab === "metrics" ? "active fw-bold text-dark border-bottom-2 border-primary" : "text-muted border-0"}`} 
+                    <button
+                        className={`nav-link py-2 px-3 ${activeTab === "metrics" ? "active fw-bold text-dark border-bottom-2 border-primary" : "text-muted border-0"}`}
                         onClick={() => setActiveTab("metrics")}
                     >
                         Metrics Dashboard
@@ -177,7 +177,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
             </ul>
 
             <div className="flex-grow-1 overflow-y-auto pe-1" style={{ maxHeight: "calc(100vh - 250px)" }}>
-                
+
                 {activeTab === "overview" && (
                     <div className="d-flex flex-column gap-3 animate-fade-in">
                         {summary && (
@@ -283,7 +283,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
                     <div className="d-flex flex-column gap-3 animate-fade-in">
                         {functions.length > 0 ? (
                             <>
-                                <FunctionTable 
+                                <FunctionTable
                                     functions={functions}
                                     selectedFunction={selectedFunction}
                                     onSelectFunction={onSelectFunction}
@@ -395,7 +395,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
                 {/* Graph Tab */}
                 {activeTab === "call_graph" && (
                     <div className="animate-fade-in">
-                        <CallGraph 
+                        <CallGraph
                             callGraph={callGraph}
                             functions={functions}
                             selectedFunction={selectedFunction}

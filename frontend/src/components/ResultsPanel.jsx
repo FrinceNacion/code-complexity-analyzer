@@ -1,7 +1,7 @@
 import AnalysisResult from "./AnalysisResult";
 
-export default function ResultsPanel({ 
-    analysis = null, 
+export default function ResultsPanel({
+    analysis = null,
     isLoading = false,
     selectedFunction = null,
     onSelectFunction
@@ -37,8 +37,8 @@ export default function ResultsPanel({
                         <div className="small">{error}</div>
                     </div>
                 ) : response ? (
-                    <AnalysisResult 
-                        response={response} 
+                    <AnalysisResult
+                        response={response}
                         selectedFunction={selectedFunction}
                         onSelectFunction={onSelectFunction}
                     />
