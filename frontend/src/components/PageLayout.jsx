@@ -35,7 +35,7 @@ export default function PageLayout() {
 
     const onAnalyzeClick = async () => {
         if (!codeContent || codeContent.trim() === "") return;
-        const content = modelRef.current?.getValue(); 
+        const content = modelRef.current?.getValue();
 
         if (!fileInfo?.file) {
             const file_name = "untitled.py"; // Default name for the file
@@ -112,9 +112,9 @@ export default function PageLayout() {
                 </div>
 
                 <div className="col-12 col-xl-7 d-flex">
-                    <ResultsPanel 
-                        analysis={analysis} 
-                        isLoading={isLoading} 
+                    <ResultsPanel
+                        analysis={analysis}
+                        isLoading={isLoading}
                         selectedFunction={selectedFunction}
                         onSelectFunction={setSelectedFunction}
                     />
