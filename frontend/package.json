@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vscode/vscode-languagedetection": "^1.0.23",
     "bootstrap": "^5.3.8",
     "d3": "^7.9.0",
     "lucide-react": "^1.23.0",
