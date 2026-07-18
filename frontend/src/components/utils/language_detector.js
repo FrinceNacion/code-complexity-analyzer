@@ -12,12 +12,29 @@ export function detectLanguageFromFile(filename) {
     return "plaintext";
 }
 
-export async function detectLanguageFromString(raw_code) {
+export function detectLanguageFromString(raw_code) {
     hljs.registerLanguage("python", python);
     hljs.registerLanguage("javascript", javascript);
     hljs.registerLanguage("typescript", typescript);
 
     const result = hljs.highlightAuto(raw_code)
-    console.log(result.language)
-    return result.language
+    let extension = null
+    switch (result.language) {
+        case 'python':
+            extension = '.py'
+            break;
+        case 'javascript':
+            extension = '.js'
+            break; 
+        case 'typescript':
+            extension = '.ts'
+            break;
+        default:
+            extension = '.txt'
+            break;
+    }
+    return {
+        language: result.language,
+        extension: extension
+    }
 }
