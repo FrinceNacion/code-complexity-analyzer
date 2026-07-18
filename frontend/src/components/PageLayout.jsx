@@ -4,7 +4,7 @@ import CodeEditor from "./CodeEditor";
 import ResultsPanel from "./ResultsPanel";
 import "./font-style.css";
 import { useAnalysis } from "../hooks/useAnalysis";
-import { detectLanguage } from "./utils/language_detector";
+import { detectLanguageFromFile, detectLanguageFromString } from "./utils/language_detector";
 
 const SAMPLE_PY = `#copy paste your code here
 def greet(name):
@@ -38,11 +38,11 @@ export default function PageLayout() {
         const content = modelRef.current?.getValue();
 
         if (!fileInfo?.file) {
-            const file_name = "untitled.py"; // Default name for the file
-            // Detect language based on the default name (can't detect from content so no js/ts detection for now)
-            const file_language = detectLanguage(file_name);
+            const file_language = detectLanguageFromString(content); 
+            const file_name = "untitled"+file_language.extension;
+            console.log(file_name)
             const file = new File([content], file_name, { type: "text/x-python-script", lastModified: Date.now() });
-            const info = { file: file, name: file_name, size: content.length, language: file_language, content: content };
+            const info = { file: file, name: file_name, size: content.length, language: file_language.language, content: content };
             targetInfo.current = info; // Store the info in the ref for later use
         } else {
             targetInfo.current = fileInfo;
