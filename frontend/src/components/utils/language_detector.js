@@ -1,4 +1,7 @@
-import hljs from "highlight.js";
+import hljs from "highlight.js/lib/core";
+import python from "highlight.js/lib/languages/python";
+import javascript from "highlight.js/lib/languages/javascript";
+import typescript from "highlight.js/lib/languages/typescript";
 
 export function detectLanguageFromFile(filename) {
     if (!filename) return "plaintext";
@@ -10,7 +13,11 @@ export function detectLanguageFromFile(filename) {
 }
 
 export async function detectLanguageFromString(raw_code) {
-    const result = hljs.highlightAuto(raw_code) 
+    hljs.registerLanguage("python", python);
+    hljs.registerLanguage("javascript", javascript);
+    hljs.registerLanguage("typescript", typescript);
+
+    const result = hljs.highlightAuto(raw_code)
     console.log(result.language)
     return result.language
 }
