@@ -13,6 +13,7 @@
     "@vscode/vscode-languagedetection": "^1.0.23",
     "bootstrap": "^5.3.8",
     "d3": "^7.9.0",
+    "highlight.js": "^11.11.1",
     "lucide-react": "^1.23.0",
     "monaco-editor": "^0.53.0",
     "react": "^19.2.7",
