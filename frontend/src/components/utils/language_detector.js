@@ -1,6 +1,6 @@
 import hljs from "highlight.js";
 
-export function detectLangaugeFromFile(filename) {
+export function detectLanguageFromFile(filename) {
     if (!filename) return "plaintext";
     const ext = filename.split(".").pop().toLowerCase();
     if (ext === "py") return "python";

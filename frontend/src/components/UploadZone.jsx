@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback } from "react";
 import { Upload } from 'lucide-react';
-import { detectLanguage } from "./utils/language_detector";
+import { detectLangaugeFromFile } from "./utils/language_detector";
 
 const ACCEPTED = [".py", ".js", ".ts"];
 const MAX_FILE_SIZE = 500 * 1024; // 500 KB in bytes
@@ -33,7 +33,7 @@ export default function UploadZone({ fileInfo, setFileInfo, onClearFile, onFileS
 
         const name = file.name || "untitled";
 
-        const language = detectLanguage(name);
+        const language = detectLangaugeFromFile(name);
         const reader = new FileReader();
 
         reader.onload = (e) => {
