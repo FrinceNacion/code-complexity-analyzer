@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback } from "react";
 import { Upload } from 'lucide-react';
-import { detectLangaugeFromFile } from "./utils/language_detector";
+import { detectLanguageFromFile } from "./utils/language_detector";
 
 const ACCEPTED = [".py", ".js", ".ts"];
 const MAX_FILE_SIZE = 500 * 1024; // 500 KB in bytes
