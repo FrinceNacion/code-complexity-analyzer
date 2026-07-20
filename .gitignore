@@ -35,6 +35,8 @@ htmlcov/
 
 # Docker
 .dockerignore
+!backend/.dockerignore
+!frontend/.dockerignore
 
 # Logs
 logs
