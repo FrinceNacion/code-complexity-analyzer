@@ -15,6 +15,15 @@ try:
 except ImportError:
     logger.warning("python-dotenv not installed — environment variables will not be loaded from .env file")
 
+
+def _get_cors_origins() -> list[str]:
+    default_origins = ["http://localhost:5173", "http://127.0.0.1:5173", "http://frontend:5173"]
+    raw_origins = os.getenv("CORS_ORIGIN", "")
+    if not raw_origins:
+        return default_origins
+
+    return [origin.strip() for origin in raw_origins.split(",") if origin.strip()]
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
@@ -52,13 +61,23 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-cors_origin = os.getenv("CORS_ORIGIN", "http://localhost:5173")
+cors_origins = _get_cors_origins()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[cors_origin],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/health")
+async def health_check() -> dict[str, str]:
+    return {"status": "ok", "service": "backend"}
+
+
+@app.get("/api/health")
+async def api_health_check() -> dict[str, str]:
+    return {"status": "ok", "service": "backend"}
 
 app.include_router(analyze.router, prefix="/api", tags=["analysis"])

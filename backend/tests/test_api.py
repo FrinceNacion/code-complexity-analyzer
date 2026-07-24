@@ -28,6 +28,13 @@ def _py_file(content: bytes | str, filename: str = "test.py") -> dict:
 
 
 @pytest.mark.asyncio
+async def test_health_endpoint(client: AsyncClient):
+    response = await client.get("/health")
+    assert response.status_code == 200
+    assert response.json()["status"] == "ok"
+
+
+@pytest.mark.asyncio
 async def test_analyze_valid_python_file(client: AsyncClient):
     functions_py = os.path.join(DUMMIES_DIR, "functions.py")
     with open(functions_py, "rb") as f:
