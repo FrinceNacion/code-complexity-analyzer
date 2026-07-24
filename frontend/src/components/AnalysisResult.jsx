@@ -219,7 +219,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
                                     <div className="col-6 col-md-4">
                                         <div className="border-start border-3 border-secondary ps-2 mb-2">
                                             <div className="small text-muted d-flex align-items-center gap-1">
-                                                Cyclomatic CC
+                                                Cyclomatic Complexity
                                             </div>
                                             <div className="fw-bold">{formatValue(fileFeatures.cyclomatic_complexity)}</div>
                                         </div>
@@ -232,7 +232,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
                                     </div>
                                     <div className="col-6 col-md-4">
                                         <div className="border-start border-3 border-secondary ps-2 mb-2">
-                                            <div className="small text-muted">Loops count</div>
+                                            <div className="small text-muted">Loop count</div>
                                             <div className="fw-bold">{formatValue(fileFeatures.loop_count)}</div>
                                         </div>
                                     </div>
