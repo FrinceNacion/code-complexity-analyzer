@@ -41,7 +41,7 @@ setup:
 	fi
 
 docker-build:
-	docker build -t codelens-backend .
+	docker compose build
 
 docker-up:
 	docker compose up --build
