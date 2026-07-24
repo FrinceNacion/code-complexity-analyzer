@@ -1,10 +1,11 @@
-.PHONY: install run test train lint docker-build docker-up docker-down clean help
+.PHONY: setup install run test train lint docker-build docker-up docker-down clean help
 
 # Default target
 help:
 	@echo ""
 	@echo "  Code complexity analyzer — available commands"
 	@echo ""
+	@echo "  make setup        Create .env from .env.example (if not exists)"
 	@echo "  make install      Install backend dependencies into active virtualenv"
 	@echo "  make run          Start the API server with hot reload"
 	@echo "  make test         Run the full test suite"
@@ -30,6 +31,14 @@ train:
 
 lint:
 	cd backend && flake8 . --max-line-length=100 --exclude=__pycache__,tests/dummies
+
+setup:
+	@if [ ! -f .env ]; then \
+		cp .env.example .env; \
+		echo "  Created .env from .env.example — edit it if needed"; \
+	else \
+		echo "  .env already exists — skipping"; \
+	fi
 
 docker-build:
 	docker build -t codelens-backend .
