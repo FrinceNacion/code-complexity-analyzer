@@ -2,7 +2,7 @@ import { useRef, useState, useCallback } from "react";
 import { Upload } from 'lucide-react';
 import { detectLanguageFromFile } from "./utils/language_detector";
 
-const ACCEPTED = [".py", ".js", ".ts"];
+const ACCEPTED = [".py"];//".js", ".ts"];
 const MAX_FILE_SIZE = 500 * 1024; // 500 KB in bytes
 
 export default function UploadZone({ fileInfo, setFileInfo, onClearFile, onFileSelect }) {
@@ -79,7 +79,7 @@ export default function UploadZone({ fileInfo, setFileInfo, onClearFile, onFileS
                 </div>
                 <div>
                     <h6 className="mb-1">Drag & Drop your source code here</h6>
-                    <p className="mb-0 text-body-secondary text-muted">Or click to browse — accepts .py, .js, .ts (max: 500 KB)</p>
+                    <p className="mb-0 text-body-secondary text-muted">Or click to browse — accepts .py (max: 500 KB)</p>
                 </div>
             </div>
 
