@@ -33,7 +33,7 @@ export default function UploadZone({ fileInfo, setFileInfo, onClearFile, onFileS
 
         const name = file.name || "untitled";
 
-        const language = detectLangaugeFromFile(name);
+        const language = detectLanguageFromFile(name);
         const reader = new FileReader();
 
         reader.onload = (e) => {
