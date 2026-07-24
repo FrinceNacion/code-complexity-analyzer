@@ -11,6 +11,11 @@ from analysis.models import (
 )
 
 router = APIRouter()
+
+@router.get("/health")
+async def health_check():
+    return {"status": "ok", "version": "0.2.0"}
+
 MAX_FILE_SIZE = 500 * 1024  # 500 KB
 
 @router.post("/analyze", response_model=AnalysisResponse)
