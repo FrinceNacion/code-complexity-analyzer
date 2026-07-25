@@ -181,7 +181,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
                 {activeTab === "overview" && (
                     <div className="d-flex flex-column gap-3 animate-fade-in">
                         {summary && (
-                            <div className="card p-3 border shadow-sm bg-white">
+                            <div className="card mb-0 p-3 border shadow-sm bg-white">
                                 <h6 className="fw-bold mb-3 text-dark">File Quality Overview</h6>
                                 <div className="row g-2">
                                     <div className="col-6 col-md-3">
@@ -213,7 +213,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
                         )}
 
                         {fileFeatures && (
-                            <div className="card p-3 border shadow-sm bg-white">
+                            <div className="card mb-0 p-3 border shadow-sm bg-white">
                                 <h6 className="fw-bold mb-3 text-dark">File-Level Structural Metrics</h6>
                                 <div className="row g-2">
                                     <div className="col-6 col-md-4">
@@ -258,7 +258,7 @@ export default function AnalysisResult({ response, selectedFunction, onSelectFun
                             </div>
                         )}
 
-                        <div className="card p-3 border shadow-sm bg-white">
+                        <div className="card mb-0 p-3 border shadow-sm bg-white">
                             <h6 className="fw-bold mb-3 d-flex align-items-center gap-2 text-dark">
                                 <Lightbulb className="text-warning" size={18} />
                                 Refactoring Recommendations
