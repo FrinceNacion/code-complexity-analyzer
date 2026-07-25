@@ -5,6 +5,7 @@ import ResultsPanel from "./ResultsPanel";
 import "./font-style.css";
 import { useAnalysis } from "../hooks/useAnalysis";
 import { detectLanguageFromFile, detectLanguageFromString } from "./utils/language_detector";
+import { Parentheses } from "lucide-react";
 
 const SAMPLE_PY = `#copy paste your code here
 def greet(name):
@@ -85,7 +86,12 @@ export default function PageLayout() {
             <div className="row gx-3 gy-3 h-100" style={{ minHeight: "100%" }}>
                 <div className="col-12 col-xl-5 d-flex h-100">
                     <div className="card p-3 d-flex flex-column w-100 mb-0">
-                        <h5 className="mb-3 fw-bold">Source Input</h5>
+                        <div className="d-flex flex-row gap-2 mb-2">
+                            <Parentheses color="#fad300" size={32}/>
+                            <h5 className="align-self-center mb-0 fw-bold">Code Complexity Analyzer</h5>
+                            <p className="fw-light fs-6 text-body-secondary">v1.0.0</p>
+                        </div>
+                        <h5 className="mb-3 fw-medium">Source Input</h5>
                         <UploadZone
                             fileInfo={fileInfo}
                             setFileInfo={setFileInfo}
