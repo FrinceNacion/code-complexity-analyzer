@@ -21,6 +21,7 @@ def main():
     y = []
 
     print("Extracting features from code snippets...")
+    # TODO: use more features, not just label and code. loops, conditionals, etc.
     for idx, row in df.iterrows():
         code = row["code"]
         label = row["big_o_label"]
