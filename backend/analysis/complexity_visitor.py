@@ -28,6 +28,7 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.loop_depth = 0
         self.max_loop_depth = 0
         self.loop_count = 0
+        self.if_count = 0
         self.comprehension_count = 0
         self.builtin_calls = []
         self.current_function = None
@@ -65,6 +66,7 @@ class ComplexityVisitor(ast.NodeVisitor):
         self.complexity += 1
         self.unique_operators.add('if')
         self.operator_counter += 1
+        self.if_count += 1
 
         self.enter_block()
         self.generic_visit(node)
@@ -155,11 +157,15 @@ class ComplexityVisitor(ast.NodeVisitor):
         if len(node.ifs):
             self.complexity += len(node.ifs)
             self.unique_operators.add('if')
+            self.if_count += 1
             self.operator_counter += len(node.ifs)
 
         if len([node.iter]):
             self.complexity += len([node.iter])
             self.unique_operators.add('for')
+            self.loop_count += 1
+            self.loop_depth += 1
+            self.max_loop_depth = max(self.max_loop_depth, self.loop_depth)
             self.operator_counter += len([node.iter])
 
         self.comprehension_count += 1
