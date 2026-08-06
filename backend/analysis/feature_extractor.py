@@ -22,19 +22,20 @@ def extract_features(visitor: "ComplexityVisitor") -> dict:
     halstead_volume = length * math.log2(vocabulary) if vocabulary > 0 else 0
 
     return ExtractedFeatures(
-        cyclomatic_complexity= visitor.complexity,
-        max_nesting_depth= visitor.max_depth,
-        max_loop_depth= visitor.max_loop_depth,
-        loop_count= visitor.loop_count,
+        cyclomatic_complexity= visitor.complexity, #
+        if_count= visitor.if_count, #
+        max_nesting_depth= visitor.max_depth, #
+        max_loop_depth= visitor.max_loop_depth, #
+        loop_count= visitor.loop_count, #
         comprehension_count= visitor.comprehension_count,
-        is_recursive= visitor.is_recursive,
+        is_recursive= visitor.is_recursive, #
         builtin_call_count= len(visitor.builtin_calls),
         unique_builtin_calls= sorted(list(set(visitor.builtin_calls))),
         halstead_vocabulary= vocabulary,
         halstead_length= length,
-        halstead_difficulty= halstead_difficulty,
-        halstead_volume= halstead_volume,
-        call_edges= visitor.calls
+        halstead_difficulty= halstead_difficulty, #
+        halstead_volume= halstead_volume, #
+        call_edges= visitor.calls #
     )
 
     return {
